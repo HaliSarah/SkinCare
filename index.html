@@ -580,7 +580,7 @@
       <div class="radio-option" data-val="No" onclick="selectRadio('q9-options',this)"><div class="radio-dot"></div><span>No, continue to results</span></div>
     </div>
     <div class="q-nav">
-      <button class="btn-secondary" onclick="goTo('screen-q8')">← Back</button>
+      <button class="btn-secondary" onclick="state.q8Skipped ? goTo('screen-q7') : goTo('screen-q8')">← Back</button>
       <button class="btn-primary" onclick="nextQ9()">Next →</button>
     </div>
   </div>
@@ -645,7 +645,7 @@
         Feel comfortable sharing your results with them, but do not order from the links above. Ask them for direct links.
       </div>
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;flex-wrap:wrap;gap:12px;">
-        <button onclick="goTo('screen-q8')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back</button>
+        <button onclick="backFromResults()" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back</button>
         <button onclick="goTo('screen-home')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake the Assessment</button>
       </div>
     </div>
@@ -941,8 +941,6 @@
       <button onclick="goTo('screen-home')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake the Assessment</button>
     </div>
 
-    <p style="text-align:center;font-size:11px;color:var(--gray);margin-top:32px;line-height:1.8;">This assessment was built by Hali Sarah Parsons, your new Mary Kay Independent Beauty Consultant!<br>If you have any questions, concerns or comments, please <a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:var(--pink);font-weight:600;">contact</a> her officially.</p>
-
   </div>
 </div>
 
@@ -1081,11 +1079,11 @@
     <div class="modal-sub" id="modal-sub">Enter your details below.</div>
     <div style="margin-bottom:14px;">
       <label class="form-label">Name</label>
-      <input type="text" class="form-input" id="modal-name" placeholder="Your name">
+      <input type="text" class="form-input" id="modal-name" placeholder="Your name" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
     <div style="margin-bottom:20px;">
       <label class="form-label">Email Address</label>
-      <input type="email" class="form-input" id="modal-email" placeholder="your@email.com">
+      <input type="text" inputmode="email" class="form-input" id="modal-email" placeholder="your@email.com" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
     </div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button id="modal-send-btn" class="btn-primary" onclick="sendModalEmail()" style="flex:1">Send</button>
@@ -1100,7 +1098,7 @@
 // ═══════════════════════════════════════════════════
 const state = {
   q1:[], q1other:'', q2:[], q2other:'', q3:'', q4:'', q5:'', q5other:'', q5b:'',
-  q6:'', q7:'', q7other:'', q8:[], q9:'', q9b:[],
+  q6:'', q7:'', q7other:'', q8:[], q8Skipped:false, q9:'', q9b:[],
   products:[], emailModalMode:''
 };
 
@@ -1200,14 +1198,14 @@ function nextQ7(){
   if(!state.q7){ alert('Please select an option.'); return; }
   state.q7other = document.getElementById('q7-other').value;
   populateQ8();
-  // Count specifics (exclude basic skin type options)
   const excludeFromQ8 = new Set(['Dry','Oily','Normal/Dry','Combination/Oily']);
   const specifics = state.q1.filter(v => !excludeFromQ8.has(v));
   if(specifics.length <= 1){
-    // Auto-set q8 to whatever they chose (or empty if none) and skip
     state.q8 = specifics;
+    state.q8Skipped = true;
     goTo('screen-q9');
   } else {
+    state.q8Skipped = false;
     goTo('screen-q8');
   }
 }
@@ -1230,9 +1228,12 @@ function nextQ8(){
 }
 function nextQ9(){
   state.q9 = getRadio('q9-options');
-  if(!state.q9){ alert('Please select an option.'); return; }
+  if(!state.q9) state.q9 = 'No';
   if(state.q9==='Yes') goTo('screen-q9b');
   else buildResults();
+}
+function backFromResults(){
+  goTo(state.q8Skipped ? 'screen-q7' : 'screen-q8');
 }
 
 // ═══════════════════════════════════════════════════
@@ -1283,9 +1284,13 @@ function buildResults(){
     products.push({name:"Mary Kay® Oil-Free Eye Makeup Remover", url:"https://www.marykay.com/sistahay/en/best-sellers/mary-kay-oil-free-eye-makeup-remover-990299632/990299632US10179024.html"});
   }
 
-  // Excess Oil (Q8 second round)
+  // Excess Oil (Q8 priority)
   if(hasExcessOil){
     products.push({name:"Beauty Blotters® Oil-Absorbing Tissues", url:"https://www.marykay.com/sistahay/en/skincare/concern/blemishes-acne/beauty-blotters-oilabsorbing-tissues-180204/180204US10041758.html"});
+    // Translucent Loose Powder — income tier2/tier3 only
+    if(income==='tier2' || income==='tier3'){
+      products.push({name:"Mary Kay® Translucent Loose Powder", url:"https://www.marykay.com/sistahay/en/makeup/face/loose-powder/mary-kay-translucent-loose-powder-111250/111250US10060182.html"});
+    }
   }
 
   // TEEN rules
@@ -1301,6 +1306,10 @@ function buildResults(){
     if(!hasAcne && hasDry){
       products.push({name:"Mary Kay® Hydrating Regimen", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html"});
     }
+    // Teen + Extremely Dry → Intense Moisturizing Cream (teens only, no acne conflict)
+    if(hasExDry && !hasAcne){
+      products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html"});
+    }
     if(hasAcne){
       products.push({name:"Clear Proof® Acne System Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-system-10058977/10058977US10058977.html"});
     }
@@ -1311,14 +1320,31 @@ function buildResults(){
     products.push({name:"Satin Lips® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/satin-collection/white-tea-citrus-satin-lips-set-300484/300484US10098324.html"});
   }
 
-  // PHA+AHA Resurfacer: only Improved Skin-Texture or Radiant in Q2, no Wrinkles, and NOT age 80+ (Retinol 0.3 conflict)
+  // Q2 GOAL: Hydrated
+  // Oily basic → Oil-Free Hydrating Gel (always)
+  // Dry basic + Extremely Dry (Q8) + income tier2/tier3 → Intense Moisturizing Cream
+  if(has(q2,'Hydrated')){
+    if(has(q1,'Combination/Oily')){
+      products.push({name:"Mary Kay® Oil-Free Hydrating Gel (Normal/Oily)", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-oilfree-hydrating-gel-990303404/990303404US10197545.html"});
+    } else if(has(q1,'Normal/Dry') && hasExDry && (income==='tier2' || income==='tier3')){
+      products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html"});
+    }
+  }
+
+  // Q2 GOAL: Even Skin-Tone → Balancing Toner
+  // Not teen, not on acne regimen, income tier2 or tier3
+  if(has(q2,'Even Skin-Tone') && age!=='Teen' && !hasAcne && (income==='tier2' || income==='tier3')){
+    products.push({name:"Mary Kay® Balancing Toner", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-balancing-toner-990311804/990311804US10201384.html"});
+  }
+
+  // PHA+AHA Resurfacer: Radiant or Improved Skin-Texture (Q2), no Wrinkles, NOT 80+, NOT Teen, income-gated
   const willGetRetinol03 = hasWrinkles && age === '80+';
   const wantsResurface = has(q2,'Improved Skin-Texture') || has(q2,'Radiant');
-  if(wantsResurface && !hasWrinkles && !willGetRetinol03){
+  if(wantsResurface && !hasWrinkles && !willGetRetinol03 && age!=='Teen' && incomeNamed){
     products.push({name:"Mary Kay Clinical Solutions® PHA + AHA Resurfacer", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-pha-aha-resurfacer-990284881/990284881US10177904.html"});
   }
 
-  // Skin Firmness goal
+  // Skin Firmness goal (Q2)
   if(hasFirm){
     products.push({name:"TimeWise Replenishing Serum C+E®", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-replenishing-serum-c-e-990279409/990279409US10171886.html"});
   }
@@ -1331,79 +1357,109 @@ function buildResults(){
     const ultOily    = hasWrinkles && hasExpr && hasOily && !hasLargePores && !hasImprovedTex;
     const mirDry     = hasExpr && hasDry  && !hasWrinkles;
     const mirOily    = hasExpr && hasOily && !hasWrinkles;
+    const wrinkleOnlyDry  = hasWrinkles && !hasExpr && hasDry;
+    const wrinkleOnlyOily = hasWrinkles && !hasExpr && hasOily;
+    // Ultimate/Beyond sets include eye cream; plain Miracle Sets do not
+    const hasUltimateSet = beyondDry || beyondOily || ultDry || ultOily;
 
-    if(beyondDry)       products.push({name:"Beyond Ultimate TimeWise® Miracle Set® (Normal to Dry)",       url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-normal-to-dry-990315016/990315016US10223246.html"});
-    else if(beyondOily) products.push({name:"Beyond Ultimate TimeWise® Miracle Set® (Combination to Oily)", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-combination-to-oily-990315017/990315017US10223245.html"});
-    else if(ultDry)     products.push({name:"Ultimate TimeWise® Miracle Set® (Normal to Dry)",              url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-normal-to-dry-990314981/990314981US10223243.html"});
-    else if(ultOily)    products.push({name:"Ultimate TimeWise® Miracle Set® (Combination to Oily)",        url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-combination-to-oily-990314980/990314980US10223244.html"});
-    else if(mirDry)     products.push({name:"TimeWise® Miracle Set® (Normal/Dry)",                          url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-normal-dry-990312970/990312970US10217417.html"});
-    else if(mirOily)    products.push({name:"TimeWise® Miracle Set® (Combination/Oily)",                    url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-combination-oily-990312971/990312971US10217415.html"});
-    // Fallback: no Expression Lines selected — recommend regimen by skin type
-    else if(!hasExpr && hasDry)  products.push({name:"Mary Kay® Hydrating Regimen",   url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html"});
-    else if(!hasExpr && hasOily) products.push({name:"Mary Kay® Mattifying Regimen",  url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html"});
+    if(beyondDry)            products.push({name:"Beyond Ultimate TimeWise® Miracle Set® (Normal to Dry)",       url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-normal-to-dry-990315016/990315016US10223246.html"});
+    else if(beyondOily)      products.push({name:"Beyond Ultimate TimeWise® Miracle Set® (Combination to Oily)", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-combination-to-oily-990315017/990315017US10223245.html"});
+    else if(ultDry)          products.push({name:"Ultimate TimeWise® Miracle Set® (Normal to Dry)",              url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-normal-to-dry-990314981/990314981US10223243.html"});
+    else if(ultOily)         products.push({name:"Ultimate TimeWise® Miracle Set® (Combination to Oily)",        url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-combination-to-oily-990314980/990314980US10223244.html"});
+    else if(mirDry)          products.push({name:"TimeWise® Miracle Set® (Normal/Dry)",                          url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-normal-dry-990312970/990312970US10217417.html"});
+    else if(mirOily)         products.push({name:"TimeWise® Miracle Set® (Combination/Oily)",                    url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-combination-oily-990312971/990312971US10217415.html"});
+    else if(wrinkleOnlyDry)  products.push({name:"TimeWise® Miracle Set® (Normal/Dry)",                          url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-normal-dry-990312970/990312970US10217417.html"});
+    else if(wrinkleOnlyOily) products.push({name:"TimeWise® Miracle Set® (Combination/Oily)",                    url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-combination-oily-990312971/990312971US10217415.html"});
+    else if(!hasExpr && !hasWrinkles && hasDry)  products.push({name:"Mary Kay® Hydrating Regimen",  url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html"});
+    else if(!hasExpr && !hasWrinkles && hasOily) products.push({name:"Mary Kay® Mattifying Regimen", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html"});
 
-    if(hasPuffy || hasSagging){
-      products.push({name:"TimeWise® Firming Eye Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-firming-eye-cream-10225538/990322933US10225538.html", note:"Use last in your skin regimen"});
+    // Volu-Fill — wrinkles, any Miracle Set type, income tier2/tier3
+    if(hasWrinkles && (income==='tier2' || income==='tier3')){
+      products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufill-deep-wrinkle-filler-100907/100907US10071883.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product."});
     }
-    if(hasSagging){
-      products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html"});
+
+    // Eye cream: Ultimate/Beyond sets already include one — skip for those
+    // Sagging → Volu-Firm Eye Renewal only; Puffy only → Firming Eye Cream only
+    if(!hasUltimateSet){
+      if(hasSagging){
+        products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html"});
+      } else if(hasPuffy){
+        products.push({name:"TimeWise® Firming Eye Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-firming-eye-cream-10225538/990322933US10225538.html", note:"Use last in your skin regimen"});
+      }
     }
   }
 
-  // 40s-50s
+  // 40s-50s — Volu-Firm® Set does NOT include eye cream
   if(age==='40s-50s'){
     products.push({name:"TimeWise Repair® Volu-Firm® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-set-990324679/990324679US10211954.html"});
-    // Excess Dryness in 40s+
-    if(hasExDry){
-      products.push({name:"TimeWise Repair® Lifting Bio-Cellulose Mask", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-lifting-biocellulose-mask-301079/301079US10107547.html"});
+    // Sagging or puffy → Volu-Firm Eye Renewal (set doesn't include one)
+    if(hasSagging || hasPuffy){
+      products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html"});
+    }
+    // Sagging → Advanced Lifting Serum, income tier2/tier3 only
+    if(hasSagging && (income==='tier2' || income==='tier3')){
+      products.push({name:"TimeWise Repair® Volu-Firm® Advanced Lifting Serum", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-lifting-serum-10208543/990324798US10208543.html", note:"Use last in your routine"});
+    }
+    // Wrinkles + income tier2/tier3 → Volu-Fill Deep Wrinkle Filler
+    if(hasWrinkles && (income==='tier2' || income==='tier3')){
+      products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufill-deep-wrinkle-filler-100907/100907US10071883.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product."});
     }
   }
 
-  // 60s-70s or 80+
+  // 60s-70s or 80+ — Ultimate Volu-Firm® Set DOES include eye cream; do not add a separate one
   if(age==='60s-70s' || age==='80+'){
     products.push({name:"TimeWise Repair® Ultimate Volu-Firm® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-ultimate-volu-firm-set-990324680/990324680US10236194.html"});
-    // Excess Dryness in 60s+
-    if(hasExDry){
+    // Sagging + tier3 → Lifting Bio-Cellulose Mask
+    if(hasSagging && income==='tier3'){
       products.push({name:"TimeWise Repair® Lifting Bio-Cellulose Mask", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-lifting-biocellulose-mask-301079/301079US10107547.html"});
+    }
+    // Radiant (Q2) + tier3 → Revealing Radiance Facial Peel
+    if(has(q2,'Radiant') && income==='tier3'){
+      products.push({name:"TimeWise Repair® Revealing Radiance® Facial Peel", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-revealing-radiance-facial-peel-300524/300524US10088897.html"});
+    }
+    // Sagging → Advanced Lifting Serum, income tier2/tier3 only
+    if(hasSagging && (income==='tier2' || income==='tier3')){
+      products.push({name:"TimeWise Repair® Volu-Firm® Advanced Lifting Serum", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-lifting-serum-10208543/990324798US10208543.html", note:"Use last in your routine"});
+    }
+    // Wrinkles + income tier2/tier3 → Volu-Fill Deep Wrinkle Filler
+    if(hasWrinkles && (income==='tier2' || income==='tier3')){
+      products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufill-deep-wrinkle-filler-100907/100907US10071883.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product."});
     }
   }
 
-  // Wrinkles combos
-  if(hasWrinkles){
+  // Wrinkles combos — Clinical Solutions, income-gated (any named tier), not Teen
+  if(hasWrinkles && age!=='Teen' && incomeNamed){
     if(age==='20s-30s'||age==='40s-50s'||age==='60s-70s'){
       products.push({name:"Mary Kay Clinical Solutions® Dynamic Wrinkle Limiter™", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-dynamic-wrinkle-limiter-10227734/990320771US10227734.html"});
     }
     if(age==='80+'){
       products.push({name:"Mary Kay Clinical Solutions® Retinol 0.3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-retinol-03-10238881/990327276US10238881.html"});
     }
-    if(hasExDry && age!=='Teen'){
+    if(hasExDry){
       products.push({name:"Mary Kay Clinical Solutions® HA + Ceramide Hydrator", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ha-ceramide-hydrator-990284879/990284879US10177906.html"});
     }
-    if(incomeNamed){
-      products.push({name:"Mary Kay Clinical Solutions® C + Resveratrol Line-Reducer", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-c-resveratrol-line-reducer-990284878/990284878US10177899.html"});
-    }
+    products.push({name:"Mary Kay Clinical Solutions® C + Resveratrol Line-Reducer", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-c-resveratrol-line-reducer-990284878/990284878US10177899.html"});
   }
 
-  // Skin Tone
-  if(hasSkinTone){
+  // Skin Tone — Clinical Solutions, income-gated, not Teen
+  if(hasSkinTone && age!=='Teen' && incomeNamed){
     products.push({name:"Mary Kay Clinical Solutions® Ferulic + Niacinamide Brightener", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ferulic-niacinamide-brightener-990284880/990284880US10177902.html"});
   }
 
-  const hasFragile    = has(q1,'Fragile') || has(q8,'Fragile');
+  const hasFragile = has(q1,'Fragile') || has(q8,'Fragile');
 
-  // Redness alone → Barrier Restore
-  // Fragile alone → Barrier Restore
-  // Fragile + Redness (either in Q1 or Q8, as long as one confirmed in Q8) → Barrier Restore
+  // Barrier Restore — Clinical Solutions, income-gated, not Teen
   const rnQ1 = has(q1,'Redness'), rnQ8 = has(q8,'Redness');
   const frQ1 = has(q1,'Fragile'), frQ8 = has(q8,'Fragile');
-  const barrierCondition = rnQ8 || frQ8 || (rnQ1 && frQ8) || (frQ1 && rnQ8);
+  const barrierCondition = (rnQ8 || frQ8 || (rnQ1 && frQ8) || (frQ1 && rnQ8)) && age!=='Teen' && incomeNamed;
   if(barrierCondition){
     products.push({name:"Mary Kay Clinical Solutions® Barrier Restore 1:1:3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/clinical-solutions-barrier-restore-113-10234061/990327732US10234061.html"});
   }
 
-  // Extremely Dry (non-Teen)
+  // Extremely Dry — non-teen only → Extra Emollient Night Cream
+  // (Intense Moisturizing Cream only triggers via Hydrated goal block above, or for teens above)
   if(hasExDry && age!=='Teen'){
-    products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html"});
+    products.push({name:"Mary Kay® Extra Emollient Night Cream", url:"https://www.marykay.com/sistahay/en/body-sun/body-sun-product-type/lotion-cream/mary-kay-extra-emollient-night-cream-100407/100407US10072682.html", note:"Apply after all other moisturizers"});
   }
 
   // Puffy Eyes
