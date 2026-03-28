@@ -3,17 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mary Kay Skin Assessment | Hali Sarah Parsons</title>
+<title>Do You Qualify For a New Skincare Regimen?</title>
 
-<!-- Meta Pixel stub — fires Lead on profile submit only (true conversion point) -->
+<!-- Meta Pixel — full implementation -->
 <script>
-!function(f){
-  f.fbq=function(){f.fbq.queue=f.fbq.queue||[];f.fbq.queue.push(arguments)};
-  f._fbq=f.fbq;f.fbq.loaded=1;f.fbq.version='2.0';f.fbq.queue=[];
-}(window);
-fbq('init','1401417148668967');
-fbq('track','PageView');
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1401417148668967');
+fbq('track', 'PageView');
 </script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1401417148668967&ev=PageView&noscript=1"
+/></noscript>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -1123,6 +1130,10 @@ function goTo(id) {
   if(el){ el.classList.add('active'); window.scrollTo(0,0); }
   // Init signature canvas when profile screen becomes visible - needs longer delay for paint
   if(id === 'screen-profile') setTimeout(initCanvas, 300);
+  // Fire Lead pixel when customer reaches the cart/confirmation screen — true conversion
+  if(id === 'screen-continue'){
+    try { if(typeof fbq !== 'undefined') fbq('track','Lead',{content_name:'skincare_assessment_complete',status:'complete'}); } catch(e){}
+  }
 }
 
 // ═══════════════════════════════════════════════════
@@ -2022,9 +2033,6 @@ function submitProfile(){
 
   <p style="font-size:11px;color:#b09090;margin-top:20px;">Submitted: ${new Date().toLocaleString()}</p>
 </div>`);
-
-  // Fire FB Lead pixel — true conversion point (consent + profile submitted)
-  try { if(typeof fbq !== 'undefined') fbq('track','Lead',{content_name:'skincare_assessment_complete',status:'complete'}); } catch(e){}
 
   // Build cart first, then navigate
   buildCartScreen();
