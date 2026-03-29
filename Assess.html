@@ -4,6 +4,50 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Do You Qualify For a New Skincare Regimen?</title>
+
+<!-- SESSION ID + PROGRESS SAVE/RESUME -->
+<script>
+(function(){
+  var params = new URLSearchParams(window.location.search);
+  var sid = params.get('sid');
+  if(!sid){
+    sid = 'mk_' + Math.random().toString(36).substr(2,9) + Date.now().toString(36);
+    try {
+      if(window.location.hostname.indexOf('github.io') !== -1 || window.location.hostname === 'localhost')
+        history.replaceState(null,'', window.location.pathname + '?sid=' + sid);
+    } catch(e){}
+  }
+  window._sessionId = sid;
+  window._resumeUrl = 'https://halisarah.github.io/SkinCare/Assess.html?sid=' + sid;
+})();
+
+function saveProgress(screen){
+  try {
+    var snap = {}; if(window.state){ Object.keys(window.state).forEach(function(k){ snap[k]=window.state[k]; }); }
+    snap._screen = screen; snap._ts = Date.now();
+    localStorage.setItem('mk_p_' + window._sessionId, JSON.stringify(snap));
+  } catch(e){}
+}
+function loadProgress(){
+  try { var r = localStorage.getItem('mk_p_' + window._sessionId); return r ? JSON.parse(r) : null; } catch(e){ return null; }
+}
+function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessionId); } catch(e){} }
+</script>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window,document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1401417148668967');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1401417148668967&ev=PageView&noscript=1"/></noscript>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -580,7 +624,7 @@
       <div class="radio-option" data-val="No" onclick="selectRadio('q9-options',this)"><div class="radio-dot"></div><span>No, continue to results</span></div>
     </div>
     <div class="q-nav">
-      <button class="btn-secondary" onclick="goTo('screen-q8')">← Back</button>
+      <button class="btn-secondary" onclick="backFromQ9()">← Back</button>
       <button class="btn-primary" onclick="nextQ9()">Next →</button>
     </div>
   </div>
@@ -634,19 +678,19 @@
 
     <div id="results-action-section">
       <div class="guarantee-note">With a 100% Satisfaction Guarantee, you can choose to:</div>
-      <div class="results-actions">
-        <button class="btn-primary" onclick="goTo('screen-profile')">Continue</button>
-        <a href="https://sistahaymarykay.wixsite.com/marykay/order-samples" target="_blank" class="btn-secondary">Request A Sample</a>
-        <button class="btn-secondary" onclick="openEmailModal('save')">Save Progress</button>
+      <div class="results-actions" style="justify-content:flex-start;">
         <button class="btn-secondary" onclick="goTo('screen-exit')">Exit</button>
+        <button class="btn-secondary" onclick="openEmailModal('save')">Save Progress</button>
+        <a href="https://sistahaymarykay.wixsite.com/marykay/order-samples" target="_blank" class="btn-secondary">Request A Sample</a>
+        <button class="btn-primary" onclick="goTo('screen-profile')" style="margin-left:auto;">Continue →</button>
       </div>
       <div class="consultant-note">
         <strong>*If you currently have a Mary Kay Independent Beauty Consultant, please exit and contact them directly.*</strong><br>
         Feel comfortable sharing your results with them, but do not order from the links above. Ask them for direct links.
       </div>
       <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;flex-wrap:wrap;gap:12px;">
-        <button onclick="goTo('screen-q8')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back</button>
-        <button onclick="goTo('screen-home')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake the Assessment</button>
+        <button onclick="backFromResults()" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back</button>
+        <button onclick="window.location.href='https://halisarah.github.io/SkinCare/Assess.html'" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake the Assessment</button>
       </div>
     </div>
   </div>
@@ -907,44 +951,12 @@
     </div>
 
     <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
-      <button id="profile-submit-btn" class="btn-primary" onclick="submitProfile()">Submit &amp; View My Results →</button>
       <button class="btn-secondary" onclick="goTo('screen-results')">← Back to Results</button>
+      <button id="profile-submit-btn" class="btn-primary" onclick="submitProfile()">Submit &amp; View My Results →</button>
     </div>
   </div>
 </div>
 
-<!-- ═══════ CONTINUE / CART SCREEN ═══════ -->
-<div id="screen-continue" class="screen">
-  <div class="page-header"><div class="page-logo">Mary Kay</div></div>
-  <div class="question-card fade-in" style="max-width:720px">
-    <div class="results-header">
-      <div class="q-step">Your Personalized Cart</div>
-      <div class="results-title">Your Qualified Products</div>
-      <p style="font-size:13px;color:var(--gray);margin-top:8px;">Click each product to shop directly on Mary Kay's website.</p>
-    </div>
-    <div class="cart-box">
-      <div class="cart-title">🛒 Your Product List</div>
-      <ul class="cart-items" id="cart-items-list"></ul>
-    </div>
-
-    <!-- Consultant opportunity — only shown if "Earning extra money" was checked -->
-    <div id="consultant-opportunity" style="display:none; margin-top:36px; border-top:2px solid var(--pink); padding-top:28px; text-align:center;">
-      <div style="font-family:'Cormorant Garamond',serif; font-size:1.7rem; color:var(--dark); margin-bottom:6px;">Ready to Turn Your Passion Into Income?</div>
-      <div style="font-size:13px; color:var(--gray); margin-bottom:20px;">Watch the video below to learn what's possible.</div>
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/lDkwtF-EdpE" title="Mary Kay Opportunity" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width:100%;max-width:560px;border-radius:14px;box-shadow:0 4px 18px rgba(232,80,122,0.15);margin-bottom:20px;display:block;"></iframe>
-      <br>
-      <button class="btn-primary" onclick="goTo('screen-consultant')" style="display:inline-block;">Become A Consultant</button>
-    </div>
-
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:32px;flex-wrap:wrap;gap:12px;">
-      <button onclick="goTo('screen-results')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back to Results</button>
-      <button onclick="goTo('screen-home')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake the Assessment</button>
-    </div>
-
-    <p style="text-align:center;font-size:11px;color:var(--gray);margin-top:32px;line-height:1.8;">This assessment was built by Hali Sarah Parsons, your new Mary Kay Independent Beauty Consultant!<br>If you have any questions, concerns or comments, please <a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:var(--pink);font-weight:600;">contact</a> her officially.</p>
-
-  </div>
-</div>
 
 <!-- ═══════ CONSULTANT OPPORTUNITY SCREEN ═══════ -->
 <div id="screen-consultant" class="screen">
@@ -1007,7 +1019,7 @@
 
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:32px;flex-wrap:wrap;gap:12px;">
       <button onclick="goTo('screen-results')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back to Results</button>
-      <button onclick="goTo('screen-home')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake Assessment</button>
+      <button onclick="window.location.href='https://halisarah.github.io/SkinCare/Assess.html'" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake Assessment</button>
     </div>
 
   </div>
@@ -1034,7 +1046,7 @@
       <div class="success-icon">👋</div>
       <div class="success-title">You Have Successfully Exited Your Assessment</div>
       <p class="success-sub">None of your progress has been saved.</p>
-      <button class="btn-primary" onclick="goTo('screen-home')">Start Over</button>
+      <button class="btn-primary" onclick="window.location.href='https://halisarah.github.io/SkinCare/Assess.html'">Start Over</button>
     </div>
   </div>
 </div>
@@ -1070,6 +1082,18 @@
 
     <div style="text-align:center;margin-top:24px;">
       <button class="btn-secondary" onclick="goTo('screen-profile')">← Back to Assessment</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ SIGNATURE CONFIRM MODAL ═══════ -->
+<div id="sig-confirm-modal" class="modal-overlay" style="z-index:1100;">
+  <div class="modal-box" style="text-align:center; max-width:380px;">
+    <div class="modal-title" style="margin-bottom:10px;">No Signature Detected</div>
+    <p class="modal-sub">Would you like to continue without signing, or go back and add your signature?</p>
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:20px;">
+      <button class="btn-primary" id="sig-continue-btn" onclick="sigModalContinue()">Continue Without Signing</button>
+      <button class="btn-secondary" id="sig-back-btn" onclick="sigModalBack()">← Go Back &amp; Sign</button>
     </div>
   </div>
 </div>
@@ -1113,6 +1137,8 @@ function goTo(id) {
   if(el){ el.classList.add('active'); window.scrollTo(0,0); }
   // Init signature canvas when profile screen becomes visible - needs longer delay for paint
   if(id === 'screen-profile') setTimeout(initCanvas, 300);
+  if(id === 'screen-thankyou'){ try{ if(typeof fbq!=='undefined') fbq('track','Lead',{content_name:'skincare_assessment_complete',status:'complete'}); }catch(e){} }
+  saveProgress(id);
 }
 
 // ═══════════════════════════════════════════════════
@@ -1234,6 +1260,16 @@ function nextQ9(){
   if(state.q9==='Yes') goTo('screen-q9b');
   else buildResults();
 }
+function backFromQ9(){
+  const excludeFromQ8 = new Set(['Dry','Oily','Normal/Dry','Combination/Oily']);
+  const specifics = (state.q1||[]).filter(v => !excludeFromQ8.has(v));
+  goTo(specifics.length <= 1 ? 'screen-q7' : 'screen-q8');
+}
+function backFromResults(){
+  // Results comes after Q9 (or Q9b) — back should go to Q9
+  // Q9 back respects the Q8 bypass, so just go to Q9
+  goTo('screen-q9');
+}
 
 // ═══════════════════════════════════════════════════
 //  HELPERS
@@ -1248,15 +1284,21 @@ function buildResults(){
 
   const products = [];
   const q1=state.q1, q2=state.q2, q8=state.q8, age=state.q6, income=state.q7;
-  const hasDry        = has(q1,'Normal/Dry')    || has(q1,'Dry') || has(q8,'Dry');
-  const hasOily       = has(q1,'Combination/Oily') || has(q1,'Oily') || has(q8,'Oily') || has(q1,'Excess Oil') || has(q8,'Excess Oil');
+  // state.q8 is always correctly populated after nextQ7():
+  //   - If user had >1 specific concern → they chose from Q8 screen
+  //   - If user had <=1 specific concern → auto-set from their Q1 selection
+  // So q8 is the single source of truth for specific concerns.
+  // hasDry/hasOily/hasExDry/hasAcne/hasLargePores check q1 too because those
+  // basic skin types live in q1 and are excluded from the Q8 chip pool.
+  const hasDry        = has(q1,'Normal/Dry')    || has(q1,'Dry')         || has(q8,'Dry');
+  const hasOily       = has(q1,'Combination/Oily') || has(q1,'Oily')     || has(q8,'Oily') || has(q1,'Excess Oil') || has(q8,'Excess Oil');
   const hasExcessOil  = has(q8,'Excess Oil');
-  const hasExDry      = has(q8,'Extremely Dry')|| has(q1,'Extremely Dry');
-  const hasAcne       = has(q8,'Acne')         || has(q1,'Acne');
+  const hasExDry      = has(q1,'Extremely Dry') || has(q8,'Extremely Dry');
+  const hasAcne       = has(q1,'Acne')          || has(q8,'Acne');
   const hasDryLips    = has(q8,'Dry Lips');
   const hasWrinkles   = has(q8,'Wrinkles');
   const hasExpr       = has(q8,'Expression Lines');
-  const hasLargePores = has(q8,'Large Pores')  || has(q1,'Large Pores');
+  const hasLargePores = has(q1,'Large Pores')   || has(q8,'Large Pores');
   const hasImprovedTex= has(q8,'Improved Skin-Texture') || has(q2,'Improved Skin-Texture');
   const hasPuffy      = has(q8,'Puffy Eyes');
   const hasSagging    = has(q8,'Sagging');
@@ -1286,10 +1328,18 @@ function buildResults(){
   // Excess Oil (Q8 second round)
   if(hasExcessOil){
     products.push({name:"Beauty Blotters® Oil-Absorbing Tissues", url:"https://www.marykay.com/sistahay/en/skincare/concern/blemishes-acne/beauty-blotters-oilabsorbing-tissues-180204/180204US10041758.html"});
+    // Translucent Loose Powder — FUTURE: tier2/tier3 only
+    if(income==='tier2' || income==='tier3'){
+      products.push({name:"Mary Kay® Translucent Loose Powder", url:"https://www.marykay.com/sistahay/en/makeup/face/loose-powder/mary-kay-translucent-loose-powder-111250/111250US10060182.html", future:true});
+    }
   }
 
   // TEEN rules
   if(age==='Teen'){
+    // Expression Lines or Wrinkles → Eye Cream always
+    if(has(q8,'Expression Lines') || has(q8,'Wrinkles')){
+      products.push({name:"TimeWise® Eye Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-eye-cream-990307131/990307131US10217408.html"});
+    }
     if((has(q8,'Combination/Oily') || has(q8,'Oily')) && !hasAcne){
       products.push({name:"Mary Kay® Mattifying Regimen", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html"});
     }
@@ -1301,6 +1351,10 @@ function buildResults(){
     if(!hasAcne && hasDry){
       products.push({name:"Mary Kay® Hydrating Regimen", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html"});
     }
+    // Teen + Extremely Dry + NOT Acne → Intense Moisturizing Cream
+    if(hasExDry && !hasAcne){
+      products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html"});
+    }
     if(hasAcne){
       products.push({name:"Clear Proof® Acne System Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-system-10058977/10058977US10058977.html"});
     }
@@ -1309,6 +1363,23 @@ function buildResults(){
   // Dry Lips
   if(hasDryLips){
     products.push({name:"Satin Lips® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/satin-collection/white-tea-citrus-satin-lips-set-300484/300484US10098324.html"});
+  }
+
+  // Q2 Goal: Hydrated
+  if(has(q2,'Hydrated')){
+    // Combination/Oily → Oil-Free Hydrating Gel (all incomes)
+    if(has(q1,'Combination/Oily') || has(q1,'Oily') || has(q1,'Excess Oil')){
+      products.push({name:"Mary Kay® Oil-Free Hydrating Gel", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-oilfree-hydrating-gel-990303404/990303404US10197545.html"});
+    }
+    // Normal/Dry + ExDry + tier2/tier3 → Intense Moisturizing Cream (FUTURE)
+    if((has(q1,'Normal/Dry') || has(q1,'Dry')) && hasExDry && (income==='tier2' || income==='tier3') && age!=='Teen'){
+      products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html", future:true});
+    }
+  }
+
+  // Q2 Goal: Even Skin-Tone → Balancing Toner (FUTURE: tier2/tier3, NOT Teen, NOT Acne)
+  if(has(q2,'Even Skin-Tone') && age!=='Teen' && !hasAcne && (income==='tier2' || income==='tier3')){
+    products.push({name:"Mary Kay® Balancing Toner", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-balancing-toner-990311804/990311804US10201384.html", future:true});
   }
 
   // PHA+AHA Resurfacer: only Improved Skin-Texture or Radiant in Q2, no Wrinkles, and NOT age 80+ (Retinol 0.3 conflict)
@@ -1342,51 +1413,88 @@ function buildResults(){
     else if(!hasExpr && hasDry)  products.push({name:"Mary Kay® Hydrating Regimen",   url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html"});
     else if(!hasExpr && hasOily) products.push({name:"Mary Kay® Mattifying Regimen",  url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html"});
 
-    if(hasPuffy || hasSagging){
-      products.push({name:"TimeWise® Firming Eye Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-firming-eye-cream-10225538/990322933US10225538.html", note:"Use last in your skin regimen"});
-    }
-    if(hasSagging){
-      products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html"});
+    // 20s-30s FUTURE add-ons — tier2/tier3 only
+    const hasBeyondOrUlt = products.some(p=>p.name.includes('Beyond Ultimate') || p.name.includes('Ultimate TimeWise'));
+    if(income==='tier2' || income==='tier3'){
+      // Wrinkle Filler: Wrinkles + tier2/tier3
+      if(hasWrinkles){
+        products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product.", future:true});
+      }
+      // Eye Renewal Cream: Sagging + NOT getting set that includes eye cream
+      if(hasSagging && !hasBeyondOrUlt){
+        products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html", future:true});
+      }
+      // Firming Eye Cream: Puffy Eyes (no Sagging) + NOT getting set that includes eye cream
+      if(hasPuffy && !hasSagging && !hasBeyondOrUlt){
+        products.push({name:"TimeWise® Firming Eye Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-firming-eye-cream-10225538/990322933US10225538.html", note:"Use last in your skin regimen", future:true});
+      }
     }
   }
 
   // 40s-50s
   if(age==='40s-50s'){
     products.push({name:"TimeWise Repair® Volu-Firm® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-set-990324679/990324679US10211954.html"});
-    // Excess Dryness in 40s+
-    if(hasExDry){
-      products.push({name:"TimeWise Repair® Lifting Bio-Cellulose Mask", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-lifting-biocellulose-mask-301079/301079US10107547.html"});
+    // FUTURE add-ons — tier2/tier3 only
+    if(income==='tier2' || income==='tier3'){
+      // Eye Renewal Cream: Sagging or Puffy Eyes
+      if(hasSagging || hasPuffy){
+        products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html", future:true});
+      }
+      // Lifting Serum: Sagging
+      if(hasSagging){
+        products.push({name:"TimeWise Repair® Volu-Firm® Advanced Lifting Serum", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-advanced-lifting-serum-300528/300528US10210233.html", note:"Use last in your routine", future:true});
+      }
+      // Wrinkle Filler: Wrinkles
+      if(hasWrinkles){
+        products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product.", future:true});
+      }
     }
   }
 
   // 60s-70s or 80+
   if(age==='60s-70s' || age==='80+'){
     products.push({name:"TimeWise Repair® Ultimate Volu-Firm® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-ultimate-volu-firm-set-990324680/990324680US10236194.html"});
-    // Excess Dryness in 60s+
-    if(hasExDry){
-      products.push({name:"TimeWise Repair® Lifting Bio-Cellulose Mask", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-lifting-biocellulose-mask-301079/301079US10107547.html"});
+    // FUTURE add-ons — income gated
+    if(income==='tier3'){
+      // Bio-Cellulose Mask: Sagging + tier3 ONLY
+      if(hasSagging){
+        products.push({name:"TimeWise Repair® Lifting Bio-Cellulose Mask", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-lifting-biocellulose-mask-301079/301079US10107547.html", future:true});
+      }
+      // Revealing Radiance Facial Peel: Q2 Radiant + tier3 ONLY
+      if(has(q2,'Radiant')){
+        products.push({name:"TimeWise Repair® Revealing Radiance® Facial Peel", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-revealing-radiance-facial-peel-300524/300524US10088897.html", future:true});
+      }
+    }
+    if(income==='tier2' || income==='tier3'){
+      // Lifting Serum: Sagging
+      if(hasSagging){
+        products.push({name:"TimeWise Repair® Volu-Firm® Advanced Lifting Serum", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-advanced-lifting-serum-300528/300528US10210233.html", note:"Use last in your routine", future:true});
+      }
+      // Wrinkle Filler: Wrinkles
+      if(hasWrinkles){
+        products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product.", future:true});
+      }
     }
   }
 
-  // Wrinkles combos
-  if(hasWrinkles){
+  // Wrinkles combos — all Clinical Solutions are FUTURE (incomeNamed + NOT Teen)
+  if(hasWrinkles && age!=='Teen' && incomeNamed){
     if(age==='20s-30s'||age==='40s-50s'||age==='60s-70s'){
-      products.push({name:"Mary Kay Clinical Solutions® Dynamic Wrinkle Limiter™", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-dynamic-wrinkle-limiter-10227734/990320771US10227734.html"});
+      products.push({name:"Mary Kay Clinical Solutions® Dynamic Wrinkle Limiter™", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-dynamic-wrinkle-limiter-10227734/990320771US10227734.html", future:true});
     }
     if(age==='80+'){
-      products.push({name:"Mary Kay Clinical Solutions® Retinol 0.3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-retinol-03-10238881/990327276US10238881.html"});
+      products.push({name:"Mary Kay Clinical Solutions® Retinol 0.3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-retinol-03-10238881/990327276US10238881.html", future:true});
     }
-    if(hasExDry && age!=='Teen'){
-      products.push({name:"Mary Kay Clinical Solutions® HA + Ceramide Hydrator", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ha-ceramide-hydrator-990284879/990284879US10177906.html"});
+    if(hasExDry){
+      products.push({name:"Mary Kay Clinical Solutions® HA + Ceramide Hydrator", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ha-ceramide-hydrator-990284879/990284879US10177906.html", future:true});
     }
-    if(incomeNamed){
-      products.push({name:"Mary Kay Clinical Solutions® C + Resveratrol Line-Reducer", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-c-resveratrol-line-reducer-990284878/990284878US10177899.html"});
-    }
+    // C + Resveratrol: always when wrinkles + incomeNamed + not Teen
+    products.push({name:"Mary Kay Clinical Solutions® C + Resveratrol Line-Reducer", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-c-resveratrol-line-reducer-990284878/990284878US10177899.html", future:true});
   }
 
-  // Skin Tone
-  if(hasSkinTone){
-    products.push({name:"Mary Kay Clinical Solutions® Ferulic + Niacinamide Brightener", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ferulic-niacinamide-brightener-990284880/990284880US10177902.html"});
+  // Skin Tone — FUTURE: incomeNamed + NOT Teen
+  if(hasSkinTone && age!=='Teen' && incomeNamed){
+    products.push({name:"Mary Kay Clinical Solutions® Ferulic + Niacinamide Brightener", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ferulic-niacinamide-brightener-990284880/990284880US10177902.html", future:true});
   }
 
   const hasFragile    = has(q1,'Fragile') || has(q8,'Fragile');
@@ -1397,13 +1505,14 @@ function buildResults(){
   const rnQ1 = has(q1,'Redness'), rnQ8 = has(q8,'Redness');
   const frQ1 = has(q1,'Fragile'), frQ8 = has(q8,'Fragile');
   const barrierCondition = rnQ8 || frQ8 || (rnQ1 && frQ8) || (frQ1 && rnQ8);
-  if(barrierCondition){
-    products.push({name:"Mary Kay Clinical Solutions® Barrier Restore 1:1:3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/clinical-solutions-barrier-restore-113-10234061/990327732US10234061.html"});
+  // Barrier Restore — FUTURE: incomeNamed + NOT Teen
+  if(barrierCondition && age!=='Teen' && incomeNamed){
+    products.push({name:"Mary Kay Clinical Solutions® Barrier Restore 1:1:3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/clinical-solutions-barrier-restore-113-10234061/990327732US10234061.html", future:true});
   }
 
-  // Extremely Dry (non-Teen)
+  // Extremely Dry (non-Teen) — Extra Emollient Night Cream BASE (no income gate)
   if(hasExDry && age!=='Teen'){
-    products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html"});
+    products.push({name:"Mary Kay® Extra Emollient Night Cream", url:"https://www.marykay.com/sistahay/en/body-sun/body-sun-product-type/lotion-cream/mary-kay-extra-emollient-night-cream-100407/100407US10072682.html", note:"Apply after all other moisturizers"});
   }
 
   // Puffy Eyes
@@ -1481,11 +1590,35 @@ function buildResults(){
     noRes.style.display='block'; actionSec.style.display='none';
   } else {
     noRes.style.display='none'; actionSec.style.display='block';
-    unique.forEach(p=>{
-      const li = document.createElement('li');
-      li.innerHTML=`<a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:12px;color:var(--gray);font-style:italic;">${p.note}</span>`:''}`;
-      list.appendChild(li);
-    });
+    const isTier2or3 = income==='tier2' || income==='tier3';
+    const baseProducts   = unique.filter(p=>!p.future);
+    const futureProducts = unique.filter(p=>p.future);
+
+    // Render BASE products under "Start with:"
+    if(baseProducts.length){
+      const startLabel = document.createElement('li');
+      startLabel.style.cssText='font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:8px 0 4px;border-bottom:none;font-weight:600;';
+      startLabel.textContent='Start with:';
+      list.appendChild(startLabel);
+      baseProducts.forEach(p=>{
+        const li = document.createElement('li');
+        li.innerHTML=`<a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:12px;color:var(--gray);font-style:italic;">${p.note}</span>`:''}`;
+        list.appendChild(li);
+      });
+    }
+
+    // Render FUTURE products only for tier2/tier3
+    if(futureProducts.length && isTier2or3){
+      const futureLabel = document.createElement('li');
+      futureLabel.style.cssText='font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:16px 0 4px;border-bottom:none;font-weight:600;';
+      futureLabel.textContent='Think about these in the near future:';
+      list.appendChild(futureLabel);
+      futureProducts.forEach(p=>{
+        const li = document.createElement('li');
+        li.innerHTML=`<a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:12px;color:var(--gray);font-style:italic;">${p.note}</span>`:''}`;
+        list.appendChild(li);
+      });
+    }
   }
 
   goTo('screen-results');
@@ -1495,9 +1628,9 @@ function buildResults(){
 //  EMAIL SYSTEM — EmailJS HTML emails
 //  Template must use {{{message}}} (triple braces) for HTML
 // ═══════════════════════════════════════════════════
-const EJS_PUBLIC_KEY  = 'zmLo4nV99WWp2KjiR';
-const EJS_SERVICE_ID  = 'MaryKay';
-const EJS_TEMPLATE_ID = 'template_z5qi34i';
+const EJS_PUBLIC_KEY   = 'zmLo4nV99WWp2KjiR';
+const EJS_SERVICE_ID   = 'MaryKay';
+const EJS_TEMPLATE_ID  = 'template_z5qi34i'; // same template handles all emails — to_email is dynamic
 const CONSULTANT_EMAIL = 'sistahaymarykay@gmail.com';
 
 window.addEventListener('load', function(){
@@ -1612,6 +1745,29 @@ function onCityChange(){
   addrSec.style.display = city ? 'block' : 'none';
 }
 
+
+// ═══════════════════════════════════════════════════
+//  SIGNATURE CONFIRM MODAL
+//  Continue = left (primary), Go Back & Sign = right (secondary/cancel)
+// ═══════════════════════════════════════════════════
+let _pendingSigSubmit = null; // stores the continuation function if user skips sig
+
+function showSigConfirmModal(fields){
+  _pendingSigSubmit = function(){ doProfileSubmit(fields, null); };
+  document.getElementById('sig-confirm-modal').classList.add('active');
+}
+function sigModalContinue(){
+  document.getElementById('sig-confirm-modal').classList.remove('active');
+  if(_pendingSigSubmit){ _pendingSigSubmit(); _pendingSigSubmit = null; }
+}
+function sigModalBack(){
+  document.getElementById('sig-confirm-modal').classList.remove('active');
+  _pendingSigSubmit = null;
+  // Scroll to signature area
+  const canvas = document.getElementById('sig-canvas');
+  if(canvas) canvas.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
 // ═══════════════════════════════════════════════════
 //  PROFILE SUBMIT
 // ═══════════════════════════════════════════════════
@@ -1638,9 +1794,19 @@ function submitProfile(){
   if(!st){ alert('Please select your state.'); document.getElementById('prof-state').focus(); return; }
   if(!zip || zip.length < 5){ alert('Please enter a valid 5-digit ZIP code.'); document.getElementById('prof-zip').focus(); return; }
   if(!hasSignature()){
-    const proceed = confirm('No signature was detected. Would you like to continue without signing?\n\nOK = continue without signature\nCancel = go back and sign');
-    if(!proceed) return;
+    // Show custom modal — browser confirm() can't reorder OK/Cancel
+    showSigConfirmModal({ firstName, lastName, email, addr, addr2, city, st, zip });
+    return;
   }
+
+  doProfileSubmit({ firstName, lastName, email, addr, addr2, city, st, zip }, null);
+}
+
+async function doProfileSubmit(fields, _unused){
+  // Rebuild all prof fields from DOM (called after validation + optional sig skip)
+  const firstName = fields.firstName, lastName = fields.lastName;
+  const email = fields.email, addr = fields.addr, addr2 = fields.addr2;
+  const city = fields.city, st = fields.st, zip = fields.zip;
 
   const prof = {
     name: firstName+' '+lastName, email, addr,
@@ -1923,9 +2089,22 @@ function submitProfile(){
       <div class="irow"><span class="ilabel">Spending Profile:</span> Advanced anti-aging and at-home spa treatments. Often upgrades to TimeWise Repair Volu-Firm line. Purchases specialized tools like the Skinvigorate Sonic brush and utilizes the Clinical Solutions line (Retinol 0.3).</div>
     </div>` : `<div class="irow" style="color:#b09090;font-style:italic;">Income bracket not specified.</div>`;
 
-  const prodHtmlMain = state.products.length
-    ? state.products.map((p,i)=>`<div class="product-item"><a href="${p.url}" target="_blank">${i+1}. ${p.name}</a><div class="purl">${p.url}</div></div>`).join('')
-    : '<p style="color:#b09090;font-style:italic;">No products.</p>';
+  const _income_tier = state.q7;
+  const _shown = (p) => !p.future || _income_tier==='tier2' || _income_tier==='tier3';
+  const _cBase = state.products.filter(p=>!p.future);
+  const _cFut  = state.products.filter(p=>p.future);
+  let prodHtmlMain = '';
+  if(!state.products.length){ prodHtmlMain='<p style="color:#b09090;font-style:italic;">No products.</p>'; }
+  else {
+    if(_cBase.length){
+      prodHtmlMain += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:8px 0 6px;font-weight:600;border-bottom:1px solid #f0e8eb;margin-bottom:4px;">Start with:</div>';
+      prodHtmlMain += _cBase.map((p,i)=>`<div class="product-item"><a href="${p.url}" target="_blank">${i+1}. ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}<div class="purl">${p.url}</div></div>`).join('');
+    }
+    if(_cFut.length){
+      prodHtmlMain += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:16px 0 6px;font-weight:600;border-top:1px solid #f0e8eb;margin-top:8px;">Think about these in the near future:</div>';
+      prodHtmlMain += _cFut.map((p,i)=>{ const s=_shown(p); const flag=s?'':' <span style="color:#e8a800;font-weight:700;">⚠️ NOT SHOWN TO CUSTOMER</span>'; return `<div class="product-item" style="${!s?'background:#fffbf0;border-left:3px solid #e8a800;padding-left:8px;':''}"><a href="${p.url}" target="_blank">${_cBase.length+i+1}. ${p.name}</a>${flag}${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}<div class="purl">${p.url}</div></div>`; }).join('');
+    }
+  }
 
   function frow(lbl,val){ return `<div class="row"><div class="field"><div class="field-lbl">${lbl}</div><div class="field-val">${val||'—'}</div></div></div>`; }
   function frow2(l1,v1,l2,v2){ return `<div class="row"><div class="field"><div class="field-lbl">${l1}</div><div class="field-val">${v1||'—'}</div></div><div class="field"><div class="field-lbl">${l2}</div><div class="field-val">${v2||'—'}</div></div></div>`; }
@@ -1965,7 +2144,7 @@ function submitProfile(){
     <div class="consent-row"><span class="consent-check">${c4?'✓':''}</span>Yes, I consent to my assessment data being used to create a <strong>customer profile</strong>.</div>
     <div class="consent-row" style="margin-top:6px;color:#c9a96e;font-size:11px;">✦ Digitally signed &nbsp;|&nbsp; ${new Date().toLocaleDateString()}</div>
     ${sigImg ? `<div style="margin-top:12px;"><div style="font-size:9px;color:#c9a96e;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">Customer Signature</div><img src="${sigImg}" style="max-width:220px;border-bottom:1px solid #e8507a;display:block;" alt="Customer Signature"><div style="font-size:10px;color:#b09090;margin-top:4px;">Signed electronically on ${new Date().toLocaleDateString()}</div></div>` : '<div style="font-size:11px;color:#b09090;margin-top:8px;font-style:italic;">No signature captured.</div>'}
-    <div style="margin-top:10px;font-size:11px;color:#8a7a80;">📋 <a href="https://69afb34ebac052d1f530b4b3--productassessmentqualification.netlify.app/#consent-terms" target="_blank" style="color:#e8507a;">View consent terms</a> — Full terms are available in the assessment.</div>
+    <div style="margin-top:10px;font-size:11px;color:#8a7a80;">📋 <a href="https://halisarah.github.io/SkinCare/Assess.html/#consent-terms" target="_blank" style="color:#e8507a;">View consent terms</a> — Full terms are available in the assessment.</div>
   </div>
 
   <div class="section">
@@ -2013,11 +2192,145 @@ function submitProfile(){
   <p style="font-size:11px;color:#b09090;margin-top:20px;">Submitted: ${new Date().toLocaleString()}</p>
 </div>`);
 
-  // Build cart first, then navigate
-  buildCartScreen();
-  goTo('screen-continue');
-
+  // ── Send consultant email (existing) ──
   sendViaFormspree(`New Lead from Product Match - ${prof.name}`, message, email);
+
+  // ── Send personal qualification results email to CUSTOMER ──
+  sendCustomerCompletionEmail(prof);
+
+  // ── Navigate to thank-you screen (final step) ──
+  goTo('screen-thankyou');
+}
+
+// ═══════════════════════════════════════════════════
+//  CUSTOMER COMPLETION EMAIL
+//  Fires automatically on profile submit — personal letter + qualification results
+//  Uses a separate EmailJS template so it routes TO the customer's address
+// ═══════════════════════════════════════════════════
+// ═══ BUILD SPLIT PRODUCT HTML FOR CUSTOMER EMAILS ═══
+function buildCustomerProductHtml(products, income){
+  if(!products||!products.length)
+    return '<p style="color:#b09090;font-style:italic;">Your consultant will follow up with personalized recommendations.</p>';
+  const isTier2or3 = income==='tier2'||income==='tier3';
+  const base   = products.filter(p=>!p.future);
+  const future = products.filter(p=>p.future);
+  let html = '';
+  if(base.length){
+    html += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:8px 0 6px;font-weight:600;">Start with:</div>';
+    html += base.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}<div class="purl">${p.url}</div></div>`).join('');
+  }
+  if(future.length&&isTier2or3){
+    html += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:16px 0 6px;font-weight:600;border-top:1px solid #f0e8eb;margin-top:8px;">Think about these in the near future:</div>';
+    html += future.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}<div class="purl">${p.url}</div></div>`).join('');
+  }
+  return html||'<p style="color:#b09090;font-style:italic;">Your consultant will follow up with personalized recommendations.</p>';
+}
+
+
+// ═══ EMAIL INBOX ROUTER ═══
+function openEmailInbox(){
+  const emailInput = document.getElementById('prof-email');
+  const email = emailInput ? emailInput.value.trim().toLowerCase() : '';
+  const domain = email.split('@')[1] || '';
+  const m = {'gmail.com':'https://mail.google.com','googlemail.com':'https://mail.google.com','yahoo.com':'https://mail.yahoo.com','ymail.com':'https://mail.yahoo.com','outlook.com':'https://outlook.live.com/mail','hotmail.com':'https://outlook.live.com/mail','live.com':'https://outlook.live.com/mail','msn.com':'https://outlook.live.com/mail','icloud.com':'https://www.icloud.com/mail','me.com':'https://www.icloud.com/mail','mac.com':'https://www.icloud.com/mail','aol.com':'https://mail.aol.com','protonmail.com':'https://mail.proton.me','proton.me':'https://mail.proton.me','att.net':'https://mail.yahoo.com','comcast.net':'https://login.comcast.net/login','verizon.net':'https://webmail.verizon.net'};
+  window.open(m[domain]||('https://mail.'+domain),'_blank');
+}
+
+async function sendCustomerCompletionEmail(prof){
+  const firstName = prof.name.split(' ')[0];
+  const email     = prof.email;
+
+  // Foundation recommendation
+  const _q1 = state.q1||[], _q8 = state.q8||[];
+  const _dry  = _q1.includes('Normal/Dry')||_q1.includes('Dry')||_q1.includes('Extremely Dry')||_q8.includes('Dry');
+  const _oily = _q1.includes('Combination/Oily')||_q1.includes('Oily')||_q1.includes('Excess Oil')||_q8.includes('Oily');
+  const cFoundRec = state.q3==='Light'  ? 'Mary Kay CC Cream Sunscreen Broad Spectrum SPF 15'
+    : state.q3==='Medium'               ? 'Endless Performance™ Crème-to-Powder Foundation'
+    : state.q3==='Full' && _dry         ? 'TimeWise® Luminous 3D Foundation'
+    : state.q3==='Full' && _oily        ? 'TimeWise® Matte-Wear Liquid Foundation'
+    : state.q3==='Full'                 ? 'TimeWise® Luminous 3D Foundation'
+    : null;
+
+  const productItemsHtml = buildCustomerProductHtml(state.products, state.q7);
+
+  // Opportunity section — only if "Earning extra money" was checked
+  const _wantsOpp = document.getElementById('int-money') && document.getElementById('int-money').checked;
+  const opportunitySection = _wantsOpp ? `
+  <div class="section" style="border-top:2px solid #e8507a;margin-top:32px;padding-top:28px;text-align:center;">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;color:#2a1a20;font-weight:300;margin-bottom:6px;">Ready to Turn Your Passion Into Income?</div>
+    <p style="font-size:13px;color:#8a7a80;line-height:1.8;margin-bottom:20px;">Watch the video below to learn what's possible with Mary Kay.</p>
+    <a href="https://www.youtube.com/watch?v=lDkwtF-EdpE" target="_blank"
+       style="display:block;position:relative;max-width:480px;margin:0 auto 20px;border-radius:12px;overflow:hidden;box-shadow:0 4px 18px rgba(232,80,122,0.2);text-decoration:none;">
+      <img src="https://img.youtube.com/vi/lDkwtF-EdpE/hqdefault.jpg" alt="Mary Kay Opportunity Video" width="480"
+           style="display:block;width:100%;border-radius:12px;">
+    </a>
+    <a href="https://halisarah.github.io/SkinCare/Opportunity.html"
+       style="display:inline-block;background:linear-gradient(135deg,#e8507a,#c93a62);color:#fff;border-radius:50px;padding:14px 36px;font-size:13px;font-family:'Jost',Arial,sans-serif;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;margin-top:8px;">
+      Become A Consultant →
+    </a>
+  </div>` : '';
+
+  const foundationSection = cFoundRec ? `
+  <div class="section">
+    <div class="sec-title">✦ Your Foundation Match</div>
+    <div class="product-item">
+      <a href="https://www.marykay.com/sistahay/en/foundation-finder.html" target="_blank">Find Your Match → ${cFoundRec}</a>
+      <div class="purl">Based on your ${state.q3||'selected'} coverage preference</div>
+    </div>
+  </div>` : '';
+
+  const customerHtml = emailWrap(`
+<div class="hdr">
+  <h1>Mary Kay</h1>
+  <p>Your Skincare Qualification Results</p>
+</div>
+<div class="body">
+  <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;color:#2a1a20;font-weight:300;margin:0 0 6px;">Dear ${firstName},</p>
+  <div style="width:40px;height:1px;background:linear-gradient(90deg,#e8507a,#c9a96e);margin:0 0 22px;"></div>
+
+  <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">I am so excited for you! You have just begun the first step to your new self. Initial appearances are marked by our faces and when we are confident behind them, it can really boost our vitality.</p>
+
+  <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">Below contains your personalized assessment results compiled into product links to begin your skincare journey with Mary Kay. The best part about these selections are that they evolve as your skin does&#8202;&#8212;&#8202;with my help! Every step of the way, I can be as involved as you are comfortable with.</p>
+
+  <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 28px;">You now have evolving product choices with your personal Mary Kay Beauty Consultant! <strong>Congratulations</strong>&#8202;&#8212;&#8202;I look forward to working with you to get your skin glowing and radiant!</p>
+
+  <div class="section">
+    <div class="sec-title">✦ Your Qualification Results</div>
+    ${productItemsHtml}
+  </div>
+
+  ${foundationSection}
+
+  ${opportunitySection}
+
+  <div style="border-top:1px solid #f0e8eb;margin-top:32px;padding-top:24px;">
+    <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;color:#e8507a;font-weight:400;margin:0 0 2px;font-style:italic;">Skin-cerely yours,</p>
+    <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;color:#2a1a20;margin:0 0 10px;">Hali Sarah Parsons</p>
+    <p style="font-size:11px;color:#b09090;margin:0 0 2px;letter-spacing:1px;text-transform:uppercase;">Mary Kay Independent Beauty Consultant</p>
+    <p style="font-size:11px;color:#b09090;margin:0 0 2px;"><a href="mailto:sistahaymarykay@gmail.com" style="color:#e8507a;text-decoration:none;">sistahaymarykay@gmail.com</a></p>
+    <p style="font-size:11px;color:#b09090;margin:0 0 20px;"><a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:#e8507a;text-decoration:none;">marykay.com/sistahay</a></p>
+  </div>
+
+  <div style="text-align:center;margin-top:4px;">
+    <a href="''' + ASSESS_URL + '''"
+       style="background:none;border:1px solid #d0b0b8;color:#b09090;border-radius:50px;padding:9px 24px;font-size:11px;font-family:'Jost',Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;">
+      Retake the Assessment
+    </a>
+  </div>
+</div>`);
+
+  // Send via the CUSTOMER template (routes TO the customer's email address)
+  try {
+    if(window.emailjs){
+      await emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+        to_email:  email,
+        subject:   'Your Mary Kay Qualification Results — Welcome!',
+        message:   customerHtml,
+        reply_to:  CONSULTANT_EMAIL,
+        name:      'Hali Sarah Parsons'
+      });
+    }
+  } catch(e){ console.warn('Customer completion email:', e); }
 }
 
 function buildCartScreen(){
@@ -2069,34 +2382,48 @@ async function sendModalEmail(){
 
   if(mode==='save'){
     // ── Email 1: to CONSULTANT — styled HTML ──
-    const prodHtml = state.products.length
-      ? state.products.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank">✦ ${p.name}</a><div class="purl">${p.url}</div></div>`).join('')
-      : '<p style="color:#b09090;font-style:italic;">None yet</p>';
+    // Build split product html for consultant
+    const _st = state.q7;
+    const _stShown = (p) => !p.future || _st==='tier2' || _st==='tier3';
+    const _stBase = state.products.filter(p=>!p.future);
+    const _stFut  = state.products.filter(p=>p.future);
+    let prodHtml = '';
+    if(!state.products.length){ prodHtml='<p style="color:#b09090;font-style:italic;">None yet</p>'; }
+    else {
+      if(_stBase.length){
+        prodHtml += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:8px 0 6px;font-weight:600;border-bottom:1px solid #f0e8eb;">Start with:</div>';
+        prodHtml += _stBase.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}<div class="purl">${p.url}</div></div>`).join('');
+      }
+      if(_stFut.length){
+        prodHtml += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:16px 0 6px;font-weight:600;border-top:1px solid #f0e8eb;margin-top:8px;">Think about these in the near future:</div>';
+        prodHtml += _stFut.map(p=>{ const s=_stShown(p); const flag=s?'':' <span style="color:#e8a800;font-weight:700;">⚠️ NOT SHOWN TO CUSTOMER</span>'; return `<div class="product-item" style="${!s?'background:#fffbf0;border-left:3px solid #e8a800;padding-left:8px;':''}"><a href="${p.url}" target="_blank">✦ ${p.name}</a>${flag}${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}<div class="purl">${p.url}</div></div>`; }).join('');
+      }
+    }
+    // Income + foundation for consultant email
+    const _sIncome = state.q7==='tier1'?'$35,000–$55,000':state.q7==='tier2'?'$60,000–$95,000':state.q7==='tier3'?'$100,000+':state.q7other||state.q7||'Not specified';
+    const _sq1=state.q1||[],_sq8=state.q8||[];
+    const _sDry=_sq1.includes('Normal/Dry')||_sq1.includes('Dry')||_sq1.includes('Extremely Dry')||_sq8.includes('Dry');
+    const _sOily=_sq1.includes('Combination/Oily')||_sq1.includes('Oily')||_sq1.includes('Excess Oil')||_sq8.includes('Oily');
+    const _sFoundRec=state.q3==='Light'?'Mary Kay CC Cream Sunscreen Broad Spectrum SPF 15':state.q3==='Medium'?'Endless Performance™ Crème-to-Powder Foundation':state.q3==='Full'&&_sDry?'TimeWise® Luminous 3D Foundation':state.q3==='Full'&&_sOily?'TimeWise® Matte-Wear Liquid Foundation':state.q3==='Full'?'TimeWise® Luminous 3D Foundation':'Not selected';
+    const _sfr=(l,v)=>`<div class="row"><div class="field"><div class="field-lbl">${l}</div><div class="field-val">${v||'—'}</div></div></div>`;
+    const _sfr2=(l1,v1,l2,v2)=>`<div class="row"><div class="field"><div class="field-lbl">${l1}</div><div class="field-val">${v1||'—'}</div></div><div class="field"><div class="field-lbl">${l2}</div><div class="field-val">${v2||'—'}</div></div></div>`;
 
     const consultantHtml = emailWrap(`
 <div class="hdr"><h1>Saved Progress</h1><p>Customer paused the assessment</p></div>
 <div class="body">
   <div class="section">
     <div class="sec-title">Customer Info</div>
-    <div class="row">
-      <div class="field"><div class="field-lbl">Name</div><div class="field-val">${name}</div></div>
-      <div class="field"><div class="field-lbl">Email</div><div class="field-val">${email}</div></div>
-    </div>
-    <div class="row">
-      <div class="field"><div class="field-lbl">Age Range</div><div class="field-val">${state.q6||'—'}</div></div>
-    </div>
+    ${_sfr2('Name',name,'Email',email)}
   </div>
   <div class="section">
-    <div class="sec-title">Assessment Progress</div>
-    <div class="row">
-      <div class="field"><div class="field-lbl">Skin Definition</div><div class="field-val">${(state.q1||[]).join(', ')||'—'}</div></div>
-    </div>
-    <div class="row">
-      <div class="field"><div class="field-lbl">Skin Goals</div><div class="field-val">${[...(state.q2||[]),state.q2other].filter(Boolean).join(', ')||'—'}</div></div>
-    </div>
-    <div class="row">
-      <div class="field"><div class="field-lbl">Priority Concerns</div><div class="field-val">${(state.q8||[]).join(', ')||'—'}</div></div>
-    </div>
+    <div class="sec-title">Assessment Answers</div>
+    ${_sfr('Skin Definition',(state.q1||[]).join(', '))}
+    ${_sfr('Skin Goals',[...(state.q2||[]),state.q2other].filter(Boolean).join(', '))}
+    ${_sfr('Priority Concerns',(state.q8||[]).join(', '))}
+    ${_sfr2('Age Range',state.q6,'Income Bracket',_sIncome)}
+    ${_sfr2('Foundation Preference',state.q3,'Foundation Recommendation',_sFoundRec)}
+    ${_sfr2('Product Preference',state.q4,'Pollutant Method',(state.q5||'')+(state.q5other?' ('+state.q5other+')':''))}
+    ${_sfr2('Foundation Satisfied',state.q5b||'N/A','Body Assessment',(state.q9b||[]).join(', ')||'None')}
   </div>
   <div class="section">
     <div class="sec-title">Recommended Products (So Far)</div>
@@ -2106,9 +2433,24 @@ async function sendModalEmail(){
 </div>`);
 
     // ── Email 2: to CUSTOMER — styled HTML matching quiz ──
-    const productItemsHtml = state.products.length
-      ? state.products.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank">✦ ${p.name}</a><div class="purl">${p.url}</div></div>`).join('')
-      : '<p style="color:#b09090;font-style:italic;">No products on file.</p>';
+    const productItemsHtml = buildCustomerProductHtml(state.products, state.q7);
+
+  // Opportunity section — only if "Earning extra money" was checked
+  const _wantsOpp = document.getElementById('int-money') && document.getElementById('int-money').checked;
+  const opportunitySection = _wantsOpp ? `
+  <div class="section" style="border-top:2px solid #e8507a;margin-top:32px;padding-top:28px;text-align:center;">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;color:#2a1a20;font-weight:300;margin-bottom:6px;">Ready to Turn Your Passion Into Income?</div>
+    <p style="font-size:13px;color:#8a7a80;line-height:1.8;margin-bottom:20px;">Watch the video below to learn what's possible with Mary Kay.</p>
+    <a href="https://www.youtube.com/watch?v=lDkwtF-EdpE" target="_blank"
+       style="display:block;position:relative;max-width:480px;margin:0 auto 20px;border-radius:12px;overflow:hidden;box-shadow:0 4px 18px rgba(232,80,122,0.2);text-decoration:none;">
+      <img src="https://img.youtube.com/vi/lDkwtF-EdpE/hqdefault.jpg" alt="Mary Kay Opportunity Video" width="480"
+           style="display:block;width:100%;border-radius:12px;">
+    </a>
+    <a href="https://halisarah.github.io/SkinCare/Opportunity.html"
+       style="display:inline-block;background:linear-gradient(135deg,#e8507a,#c93a62);color:#fff;border-radius:50px;padding:14px 36px;font-size:13px;font-family:'Jost',Arial,sans-serif;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;margin-top:8px;">
+      Become A Consultant →
+    </a>
+  </div>` : '';
 
     // Foundation recommendation for customer email
     const _cq1 = state.q1||[], _cq8 = state.q8||[];
@@ -2131,37 +2473,50 @@ async function sendModalEmail(){
     </div>
   </div>`;
 
+    const _resumeLink = window._resumeUrl || 'https://halisarah.github.io/SkinCare/Assess.html';
     const customerHtml = emailWrap(`
 <div class="hdr">
   <h1>Mary Kay</h1>
-  <p>Skincare Qualification Assessment</p>
+  <p>Your Progress Is Saved!</p>
 </div>
 <div class="body">
   <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;color:#2a1a20;font-weight:300;margin:0 0 18px;">Hi ${name},</p>
-  <p style="font-size:14px;color:#3d2530;line-height:1.7;margin:0 0 24px;">Thank you for taking the <strong><a href="https://69afb34ebac052d1f530b4b3--productassessmentqualification.netlify.app" target="_blank" style="color:#e8507a;text-decoration:none;">Mary Kay Skincare Qualification Assessment</a></strong>! Your personalized product qualifications are saved below. We look forward to helping you look and feel your very best!</p>
+  <p style="font-size:14px;color:#3d2530;line-height:1.8;margin:0 0 20px;">Your Mary Kay Skin Assessment progress has been saved! Your product qualifications so far are listed below.</p>
+
+  <div style="background:#fff5f8;border-left:4px solid #e8507a;padding:20px 24px;margin:0 0 28px;border-radius:10px;text-align:center;">
+    <p style="font-size:15px;font-weight:600;color:#2a1a20;margin:0 0 8px;">&#127881; You're almost entered in this month's drawing!</p>
+    <p style="font-size:13px;color:#8a7a80;line-height:1.8;margin:0 0 16px;">When you <strong>complete</strong> your assessment, your name gets entered into a drawing for a <strong>free product</strong> conducted every 1st of the month!</p>
+    <a href="${_resumeLink}" style="display:inline-block;background:linear-gradient(135deg,#e8507a,#c93a62);color:#fff;border-radius:50px;padding:14px 36px;font-size:13px;font-family:'Jost',Arial,sans-serif;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;">&#9654; Continue My Assessment &#8594;</a>
+  </div>
 
   <div class="section">
-    <div class="sec-title">✦ Your Recommended Products</div>
+    <div class="sec-title">&#10022; Your Qualifications So Far</div>
     ${productItemsHtml}
   </div>
 
   ${foundationSection}
 
-  <p style="font-size:13px;color:#8a7a80;line-height:1.8;margin:24px 0 8px;font-style:italic;text-align:center;">With more time to think about your skin goals, things may have changed.</p>
+  ${opportunitySection}
 
-  <div style="text-align:center;margin:0 0 28px;">
-    <a href="https://69afb34ebac052d1f530b4b3--productassessmentqualification.netlify.app"
-       style="display:inline-block;background:linear-gradient(135deg,#e8507a,#c93a62);color:#fff !important;border-radius:50px;padding:14px 36px;font-size:13px;font-family:'Jost',Arial,sans-serif;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;">
-      Retake Your Qualification Assessment →
-    </a>
+  <div style="border-top:1px solid #f0e8eb;margin-top:32px;padding-top:24px;">
+    <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;color:#e8507a;font-weight:400;margin:0 0 2px;font-style:italic;">Skin-cerely yours,</p>
+    <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;color:#2a1a20;margin:0 0 10px;">Hali Sarah Parsons</p>
+    <p style="font-size:11px;color:#b09090;margin:0 0 2px;letter-spacing:1px;text-transform:uppercase;">Mary Kay Independent Beauty Consultant</p>
+    <p style="font-size:11px;color:#b09090;margin:0 0 2px;"><a href="mailto:sistahaymarykay@gmail.com" style="color:#e8507a;text-decoration:none;">sistahaymarykay@gmail.com</a></p>
+    <p style="font-size:11px;color:#b09090;margin:0 0 16px;"><a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:#e8507a;text-decoration:none;">marykay.com/sistahay</a></p>
   </div>
 
-  <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;color:#e8507a;font-weight:400;margin:24px 0 0;font-style:italic;">Skin-cerely yours, Hali Sarah Parsons</p>
-  <p style="font-size:11px;color:#b09090;margin:4px 0 0;">Mary Kay Independent Beauty Consultant</p>
+  <div style="text-align:center;margin-top:4px;">
+    <a href="${_resumeLink}"
+       style="background:none;border:1px solid #d0b0b8;color:#b09090;border-radius:50px;padding:9px 24px;font-size:11px;font-family:'Jost',Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;">
+      Retake the Assessment
+    </a>
+  </div>
 </div>`);
 
-    const sent1 = await sendViaFormspree('Saved Progress from Product Match - ' + name, consultantHtml, email);
-    const sent2 = await sendViaFormspree('My Saved Progress from Qualification Assessment', customerHtml, CONSULTANT_EMAIL, email);
+    let sent1=false,sent2=false;
+    try{sent1=await sendViaFormspree('Saved Progress from Product Match - '+name,consultantHtml,email);}catch(e){console.warn('Consultant email:',e);}
+    try{sent2=await sendViaFormspree('My Saved Progress from Qualification Assessment',customerHtml,CONSULTANT_EMAIL,email);}catch(e){console.warn('Customer email:',e);}
 
     btn.textContent='Send'; btn.disabled=false;
     closeEmailModal();
@@ -2319,8 +2674,71 @@ function hasSignature(){
 })();
 
 // Skip home screen — go straight to Q1 on load
-// "Retake the Assessment" buttons still call goTo('screen-home') which works normally
+// "Retake the Assessment" buttons still call window.location.href='https://halisarah.github.io/SkinCare/Assess.html' which works normally
 window.scrollTo(0, 0);
+
+// ═══ RESUME: restore saved progress if ?sid= in URL ═══
+(function tryResume(){
+  var saved = loadProgress();
+  if(!saved || !saved._screen) return;
+  if(window.state){
+    Object.keys(saved).forEach(function(k){
+      if(k !== '_screen' && k !== '_ts') window.state[k] = saved[k];
+    });
+  }
+  var target = saved._screen;
+  setTimeout(function(){
+    if(target === 'screen-q8') populateQ8 && populateQ8();
+    if(target === 'screen-results'){ buildResults && buildResults(); return; }
+    goTo(target);
+  }, 150);
+})();
+
 </script>
+
+<!-- ═══════ THANK YOU SCREEN — final step after profile submit ═══════ -->
+<div id="screen-thankyou" class="screen">
+  <div class="page-header"><div class="page-logo">Mary Kay</div></div>
+  <div class="question-card fade-in" style="max-width:680px; text-align:center; padding:clamp(36px,6vw,64px);">
+
+    <div style="font-size:52px; margin-bottom:16px;">✨</div>
+
+    <div style="font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,5vw,2.6rem); color:var(--dark); font-weight:300; line-height:1.2; margin-bottom:12px;">
+      You're All Set,<br><span style="font-style:italic; color:var(--pink);">Beautiful!</span>
+    </div>
+
+    <div style="width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px auto 24px;"></div>
+
+    <p style="font-size:14px;color:var(--gray);line-height:1.9;margin-bottom:20px;">
+      Your skin assessment is complete and your beauty profile has been submitted.
+      <em>Hali Sarah</em> will review your results and <em>may</em> reach out personally.
+    </p>
+
+    <div style="background:var(--pink-pale);border-left:3px solid var(--gold);border-radius:10px;padding:18px 22px;margin:0 0 24px;text-align:left;">
+      <p style="font-size:13px;color:var(--text);line-height:1.8;margin:0;">
+        <strong>What happens next?</strong><br>
+        Your personalized <strong>qualification results</strong> have been sent to your email.
+        Hali Sarah Parsons will follow up with you if no further action is taken on your behalf within 48 hours.
+        During this time, you may reach out to her to walk you through your qualified products and answer any questions.
+      </p>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <a href="https://www.marykay.com/sistahay/en/home" target="_blank" class="btn-primary" style="display:inline-block;">Shop Mary Kay</a>
+    </div>
+
+    <p style="font-size:11px;color:var(--gray);line-height:1.8;margin-bottom:20px;">
+      If you have any questions, concerns or comments, please
+      <a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:var(--pink);font-weight:600;">contact Hali Sarah</a> officially.
+    </p>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid #f0e8eb;flex-wrap:wrap;gap:10px;">
+      <button onclick="goTo('screen-profile')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back</button>
+      <button onclick="window.location.href='https://halisarah.github.io/SkinCare/Assess.html'" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake the Assessment</button>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>
