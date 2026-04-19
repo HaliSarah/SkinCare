@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Complete Your Mary Kay Skin Assessment</title>
+<title>Bracketed Skin Assessment — Mary Kay</title>
 
 <!-- SESSION ID + PROGRESS SAVE/RESUME -->
 <script>
@@ -344,14 +344,235 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
 </head>
 <body>
 
-<!-- ═══════ LANDING PAGE ═══════ -->
+<!-- ═══════ SCREEN: HOME ═══════ -->
+<div id="screen-home" class="screen">
+  <!-- Animated background layers -->
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+  <div class="home-particles" id="home-particles"></div>
+  <div class="ring-wrap">
+    <div class="hring hring1"></div>
+    <div class="hring hring2"></div>
+    <div class="hring hring3"></div>
+  </div>
+  <div class="hcorner htl"></div>
+  <div class="hcorner htr"></div>
+  <div class="hcorner hbl"></div>
+  <div class="hcorner hbr"></div>
+  <!-- Original content — untouched -->
+  <div class="hero-title">Do You Qualify For a<br><span>New Skincare Regimen?</span></div>
+  <div class="hero-divider"></div>
+  <button class="btn-primary" onclick="goTo('screen-q1')">Apply Now</button>
+  <div style="margin-top:20px;"><a href="https://halisarah.github.io/SkinCare/Assess.html" style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:1px;text-decoration:none;">← Back to Quick Assessment</a></div>
+</div>
+
+<!-- ═══════ Q1: SKIN DEFINITION ═══════ -->
+<div id="screen-q1" class="screen active">
+  <div class="page-header"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">Step 1 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+  </div>
+  <div class="question-card fade-in">
+    <div class="q-step">Question 1</div>
+    <div class="q-title">How would you define your skin?</div>
+    <div class="q-hint">Select all that apply</div>
+
+    <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin:12px 0 8px;">(Basic) <span style="color:var(--gray);font-weight:400;font-style:italic;letter-spacing:0;text-transform:none;">— select at least one</span></div>
+    <div class="options-grid" id="q1-basic-options">
+      <div class="option-chip" data-val="Normal/Dry">Normal / Dry</div>
+      <div class="option-chip" data-val="Combination/Oily">Combination / Oily</div>
+    </div>
+
+    <div style="font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--pink);margin:16px 0 8px;">(Specific)</div>
+    <div class="options-grid" id="q1-options">
+      <div class="option-chip" data-val="Large Pores">Large Pores</div>
+      <div class="option-chip" data-val="Wrinkles">Wrinkles</div>
+      <div class="option-chip" data-val="Expression Lines">Expression Lines</div>
+      <div class="option-chip" data-val="Extremely Dry">Extremely Dry</div>
+      <div class="option-chip" data-val="Redness">Redness</div>
+      <div class="option-chip" data-val="Fragile">Fragile</div>
+      <div class="option-chip" data-val="Excess Oil">Excess Oil</div>
+      <div class="option-chip" data-val="Puffy Eyes">Puffy Eyes</div>
+      <div class="option-chip" data-val="Stubborn Make-Up Residue">Stubborn Make-Up Residue</div>
+      <div class="option-chip" data-val="Dark Circles">Dark Circles</div>
+      <div class="option-chip" data-val="Skin Tone Variations">Skin Tone Variations</div>
+      <div class="option-chip" data-val="Sagging">Sagging</div>
+      <div class="option-chip" data-val="Dry Lips">Dry Lips</div>
+      <div class="option-chip" data-val="Sensitive">Sensitive</div>
+      <div class="option-chip" data-val="Acne">Acne</div>
+      <div class="option-chip" data-val="Other" id="q1-other-chip">Other</div>
+    </div>
+    <input type="text" id="q1-other" class="text-input" placeholder="Describe your skin concern..." style="display:none;margin-top:10px;">
+    <div class="q-nav">
+      <button class="btn-primary" onclick="nextQ1()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ Q2: FOUNDATION ═══════ -->
+<div id="screen-q2" class="screen">
+  <div class="page-header"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">Step 2 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+  </div>
+  <div class="question-card fade-in">
+    <div class="q-step">Question 2</div>
+    <div class="q-title"><em>Did you know foundation is skincare?</em></div>
+    <div class="options-radio" id="q2-options">
+      <div class="radio-option" data-val="Yes" onclick="selectRadio('q2-options',this)"><div class="radio-dot"></div><span>Yes</span></div>
+      <div class="radio-option" data-val="No" onclick="selectRadio('q2-options',this)"><div class="radio-dot"></div><span>No</span></div>
+    </div>
+    <div class="q-nav">
+      <button class="btn-secondary" onclick="goTo('screen-q1')">← Back</button>
+      <button class="btn-primary" onclick="nextQ2()">Next →</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════ AGE RANGE ═══════ -->
+<div id="screen-age" class="screen">
+  <div class="page-header"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">Step 3 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+  </div>
+  <div class="question-card fade-in">
+    <div class="q-step">Age Range</div>
+    <div class="q-title">What is your age range?</div>
+    <div class="options-radio" id="age-options">
+      <div class="radio-option" data-val="Teen" onclick="selectRadio('age-options',this)"><div class="radio-dot"></div><span>Teen</span></div>
+      <div class="radio-option" data-val="20s-30s" onclick="selectRadio('age-options',this)"><div class="radio-dot"></div><span>20's – 30's</span></div>
+      <div class="radio-option" data-val="40s-50s" onclick="selectRadio('age-options',this)"><div class="radio-dot"></div><span>40's – 50's</span></div>
+      <div class="radio-option" data-val="60s-70s" onclick="selectRadio('age-options',this)"><div class="radio-dot"></div><span>60's – 70's</span></div>
+      <div class="radio-option" data-val="80+" onclick="selectRadio('age-options',this)"><div class="radio-dot"></div><span>80+</span></div>
+    </div>
+    <div class="q-nav">
+      <button class="btn-secondary" onclick="goTo('screen-q2')">← Back</button>
+      <button class="btn-primary" onclick="nextAge()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ INCOME ═══════ -->
+<div id="screen-income" class="screen">
+  <div class="page-header"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">Step 4 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:67%"></div></div>
+  </div>
+  <div class="question-card fade-in">
+    <div class="q-step">Income Bracket</div>
+    <div class="q-title">What income bracket do you place yourself in?</div>
+    <div class="options-radio" id="income-options">
+      <div class="radio-option" data-val="tier1" onclick="selectRadio('income-options',this)"><div class="radio-dot"></div><span>$35,000 – $55,000</span></div>
+      <div class="radio-option" data-val="tier2" onclick="selectRadio('income-options',this)"><div class="radio-dot"></div><span>$60,000 – $95,000</span></div>
+      <div class="radio-option" data-val="tier3" onclick="selectRadio('income-options',this)"><div class="radio-dot"></div><span>$100,000+</span></div>
+      <div class="radio-option" data-val="other" onclick="selectRadio('income-options',this); document.getElementById('income-other').classList.add('visible')"><div class="radio-dot"></div><span>Other / Prefer not to say</span></div>
+    </div>
+    <input type="text" id="income-other" class="text-input" placeholder="Please specify...">
+    <div class="q-nav">
+      <button class="btn-secondary" onclick="goTo('screen-age')">← Back</button>
+      <button class="btn-primary" onclick="nextIncome()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ Q9: BODY ASSESSMENT ═══════ -->
+<div id="screen-q9" class="screen">
+  <div class="page-header"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">Step 5 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+  </div>
+  <div class="question-card fade-in">
+    <div class="q-step">Question 3</div>
+    <div class="q-title">Do you want to assess yourself to see if you qualify for body skincare?</div>
+    <div class="options-radio" id="q9-options">
+      <div class="radio-option" data-val="Yes" onclick="selectRadio('q9-options',this)"><div class="radio-dot"></div><span>Yes</span></div>
+      <div class="radio-option" data-val="No" onclick="selectRadio('q9-options',this)"><div class="radio-dot"></div><span>No, continue to results</span></div>
+    </div>
+    <div class="q-nav">
+      <button class="btn-secondary" onclick="goTo('screen-income')">← Back</button>
+      <button class="btn-primary" onclick="nextQ3New()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ Q9B: BODY SKIN ═══════ -->
+<div id="screen-q9b" class="screen">
+  <div class="page-header"></div>
+  <div class="progress-bar-wrap">
+    <div class="progress-label">Step 6 of 6</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+  </div>
+  <div class="question-card fade-in">
+    <div class="q-step">Body Skincare</div>
+    <div class="q-title">How would you define your body's skin?</div>
+    <div class="q-hint">Select all that apply</div>
+    <div class="options-grid" id="q9b-options">
+      <div class="option-chip" data-val="Dry Feet">Dry Feet</div>
+      <div class="option-chip" data-val="Dry Hands">Dry Hands</div>
+      <div class="option-chip" data-val="Dry Skin">Dry Skin</div>
+      <div class="option-chip" data-val="Sunburn Prone">Sunburn Prone</div>
+      <div class="option-chip" data-val="Cellulite">Cellulite</div>
+    </div>
+    <div class="q-nav">
+      <button class="btn-secondary" onclick="goTo('screen-q9')">← Back</button>
+      <button class="btn-primary" onclick="buildResultsNew()">See My Results →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ RESULTS ═══════ -->
+<div id="screen-results" class="screen">
+  <div class="page-header">
+    <div class="page-logo">Mary Kay</div>
+  </div>
+  <div class="question-card fade-in" style="max-width:720px">
+    <div class="results-header">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);color:var(--gold);font-weight:400;letter-spacing:1px;margin-bottom:8px;">Congratulations!</div>
+      <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--dark);font-weight:400;margin-bottom:8px;">You Qualify for the Following:</div>
+    </div>
+
+    <div id="pollutant-message"></div>
+    <div id="foundation-finder-msg"></div>
+
+    <ul class="product-list" id="results-list"></ul>
+
+    <div id="no-results-section" class="no-results-box" style="display:none">
+      <p>At this time, you don't qualify for a new skincare regimen. Feel free to browse products at your own will by <a href="https://www.marykay.com/sistahay/en/home" target="_blank">Clicking Here</a>. If you would like to submit your results, an independent beauty consultant can assess them directly and reach out to you via email.</p>
+      <button class="btn-primary" onclick="openEmailModal('submit')">Submit My Results</button>
+    </div>
+
+    <div id="results-action-section">
+      <div class="guarantee-note">With a 100% Satisfaction Guarantee, you have everything to gain!</div>
+      <div class="results-actions" style="justify-content:center;">
+        <button class="btn-secondary" onclick="openEmailModal('save')">Save Results</button>
+        <button class="btn-primary" onclick="goTo('screen-profile')">Request a Free Sample →</button>
+      </div>
+      <div class="consultant-note">
+        <strong>*If you currently have a Mary Kay Independent Beauty Consultant, please exit and contact them directly.*</strong><br>
+        Feel comfortable sharing your results with them, but do not order from the links above. Ask them for direct links.
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;flex-wrap:wrap;gap:12px;">
+        <button onclick="backFromResults()" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back</button>
+        <button onclick="window.location.href='https://halisarah.github.io/SkinCare/BracketAssess.html'" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake the Assessment</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <!-- ═══════ PROFILE FORM (includes consent + signature) ═══════ -->
-<div id="screen-profile" class="screen active">
-  <div class="page-header"><div class="page-logo">Beauty Profile</div></div>
+<div id="screen-profile" class="screen">
+  <div class="page-header"><div class="page-logo">Mary Kay</div></div>
   <div class="question-card fade-in" style="max-width:720px">
-    <div class="consent-title">Enter To Win Free Product</div>
-    <div style="font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:20px;">Monthly Drawing</div>
+    <div class="consent-title">To Receive Your Free Sample(s),<br>Please Fill Out Your Beauty Profile Below:</div>
     <p style="font-size:13px;color:var(--gray);margin-bottom:20px;text-align:center;">Fields marked <span style="color:var(--pink)">*</span> are required.</p>
 
     <div class="section-title">Personal Information</div>
@@ -526,6 +747,22 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
       </div>
     </div>
 
+
+    <!-- SAMPLE SELECTION DROPDOWN -->
+    <div class="section-title" style="margin-top:28px;">Your Free Sample Selections <span style="font-size:12px;color:var(--gray);font-weight:400;font-family:'Jost',sans-serif;">— click to expand</span></div>
+    <div style="background:var(--pink-pale);border:1px solid #f0d8e0;border-radius:12px;padding:16px 18px;margin-bottom:20px;">
+      <button type="button" onclick="toggleSampleDropdown()" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;font-family:'Jost',sans-serif;font-size:13px;color:var(--pink);font-weight:600;width:100%;text-align:left;padding:0;">
+        <span id="sample-arrow" style="font-size:16px;transition:transform 0.2s;">&#9658;</span>
+        <span>Select from your qualified products</span>
+      </button>
+      <div id="sample-dropdown-body" style="display:none;margin-top:14px;">
+        <p style="font-size:12px;color:var(--gray);margin-bottom:12px;font-style:italic;">Click each product you'd like as a free sample.</p>
+        <div id="sample-product-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+        <p style="font-size:12px;color:var(--gold);margin-top:14px;line-height:1.7;">&#10022; We will send your free sample(s) to the address you provide on this form.</p>
+        <p style="font-size:11px;color:var(--gray);margin-top:6px;font-style:italic;">* Sample availability is subject to Hali Sarah's current inventory. She will confirm with you directly.</p>
+      </div>
+    </div>
+
     <div class="section-title">Wish List Referrals</div>
     <p style="font-size:12px;color:var(--gray);margin-bottom:14px;font-style:italic;">Who can you share your product wish list with?</p>
     <div class="form-row">
@@ -582,6 +819,8 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
       I can't wait to provide you with the very best in customer service to meet all your beauty needs!<br><br>
       <em>Please indicate your preferences below and sign in the space provided:</em>
     </div>
+    <p style="font-size:12px;color:var(--gray);margin-bottom:10px;font-style:italic;">Select which you consent to &mdash; all are optional.</p>
+    <div style="margin-bottom:12px;"><label class="consent-check" style="font-weight:600;color:var(--pink);"><input type="checkbox" id="consent-all" onchange="toggleAllConsent(this)"> Select All</label></div>
     <div class="consent-options" style="margin-top:14px;">
       <label class="consent-check">
         <input type="checkbox" id="consent-contact"> Yes, I would like to receive <strong>email updates</strong> regarding Mary Kay® products and services.
@@ -605,8 +844,9 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
       <span class="sig-clear" onclick="clearSignature()">✕ Clear &amp; Redraw</span>
     </div>
 
-    <div style="margin-top:28px;text-align:center;">
-      <button id="profile-submit-btn" class="btn-primary" onclick="submitProfile()">Submit &amp; View My Results →</button>
+    <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap;">
+      <button class="btn-secondary" onclick="goTo('screen-results')">← Back to Results</button>
+      <button id="profile-submit-btn" class="btn-primary" onclick="submitProfile()">Submit</button>
     </div>
   </div>
 </div>
@@ -672,7 +912,8 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
     </div>
 
     <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:32px;flex-wrap:wrap;gap:12px;">
-      <button onclick="window.location.href='https://halisarah.github.io/SkinCare/Assess.html'" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake Assessment</button>
+      <button onclick="goTo('screen-results')" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back to Results</button>
+      <button onclick="window.location.href='https://halisarah.github.io/SkinCare/BracketAssess.html'" style="background:none;border:none;font-size:11px;color:#b09090;cursor:pointer;padding:4px 8px;letter-spacing:1px;">Retake Assessment</button>
     </div>
 
   </div>
@@ -687,6 +928,7 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
       <p class="success-sub">A summary email has been sent to you containing the products you have been qualified for. Your skin will thank you later!</p>
     </div>
     <div style="text-align:center; margin-top:16px;">
+      <button class="btn-secondary" onclick="goTo('screen-results')">← Back to My Results</button>
     </div>
   </div>
 </div>
@@ -698,7 +940,7 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
       <div class="success-icon">👋</div>
       <div class="success-title">You Have Successfully Exited Your Assessment</div>
       <p class="success-sub">None of your progress has been saved.</p>
-      <button class="btn-primary" onclick="window.location.href='https://halisarah.github.io/SkinCare/Assess.html'">Start Over</button>
+      <button class="btn-primary" onclick="window.location.href='https://halisarah.github.io/SkinCare/BracketAssess.html'">Start Over</button>
     </div>
   </div>
 </div>
@@ -770,49 +1012,16 @@ function clearProgress(){ try { localStorage.removeItem('mk_p_' + window._sessio
   </div>
 </div>
 
-<!-- ═══════ THANK YOU SCREEN ═══════ -->
-<div id="screen-thankyou" class="screen" style="background:radial-gradient(ellipse at 20% 50%,#3d0a1e 0%,#1a0d13 50%,#0d0608 100%);justify-content:center;position:relative;overflow:hidden;min-height:100vh;">
-  <div id="ty-sparkles" style="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;"></div>
-  <div class="hcorner htl"></div><div class="hcorner htr"></div><div class="hcorner hbl"></div><div class="hcorner hbr"></div>
-  <div class="question-card fade-in" style="max-width:600px;text-align:center;padding:clamp(36px,6vw,60px);background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);border-radius:20px;box-shadow:0 4px 40px rgba(0,0,0,0.4);position:relative;z-index:2;margin:auto;">
-    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;opacity:0.8;">Mary Kay &nbsp;·&nbsp; Skin Assessment</div>
-    <div style="font-size:52px;margin-bottom:12px;">✨</div>
-    <div id="ty-name-greeting" style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3.5vw,1.8rem);color:white;font-weight:300;font-style:italic;margin-bottom:8px;"></div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:white;font-weight:300;line-height:1.2;margin-bottom:12px;">You're All Set,<br><span style="font-style:italic;color:var(--gold);">Beautiful!</span></div>
-    <div style="width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:16px auto 20px;"></div>
-    <p style="font-size:14px;color:rgba(255,255,255,0.7);line-height:1.9;margin-bottom:16px;">Your beauty profile has been submitted and your entry to win a complimentary product has been recorded! <em>Hali Sarah</em> will review your results and <em>may</em> reach out personally.</p>
-    <div style="background:rgba(201,169,110,0.08);border-left:3px solid var(--gold);border-radius:10px;padding:18px 22px;margin:0 0 16px;text-align:left;">
-      <p style="font-size:13px;color:rgba(255,255,255,0.8);line-height:1.9;margin:0;">I am so excited for you! You have just begun the first step to your new self. Initial appearances are marked by our faces and when we are confident behind them, it can really boost our vitality. The best part about having a personal Mary Kay Beauty Consultant is that your skincare regimen evolves with your skin! Every step of the way, I can be as involved as you're comfortable with. If you are introverted — or feeling that way, you can always re-take the assessment as your skin changes.<br><br>I look forward to working with you to get your skin glowing and radiant!</p>
-    </div>
-    <div style="background:rgba(232,80,122,0.08);border-left:3px solid var(--pink);border-radius:10px;padding:14px 18px;margin:0 0 20px;text-align:left;">
-      <p style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.8;margin:0;"><strong style="color:var(--gold);">What happens next?</strong><br>Your personalized qualification results are already in the email that sent you here. If no action is taken on your behalf (within 48 hours), Hali Sarah Parsons will follow up with you.</p>
-    </div>
-    <div id="ty-opportunity" style="display:none;border-top:2px solid var(--pink);margin-bottom:20px;padding-top:20px;text-align:center;">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:white;font-weight:300;margin-bottom:8px;">Ready to Turn Your Passion Into Income?</div>
-      <p style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:16px;">Watch the video to learn what's possible with Mary Kay.</p>
-      <a href="https://www.youtube.com/watch?v=lDkwtF-EdpE" target="_blank" style="display:block;max-width:400px;margin:0 auto 16px;border-radius:12px;overflow:hidden;box-shadow:0 4px 18px rgba(232,80,122,0.2);text-decoration:none;"><img src="https://img.youtube.com/vi/lDkwtF-EdpE/hqdefault.jpg" alt="Mary Kay Opportunity" style="display:block;width:100%;border-radius:12px;"></a>
-      <a href="https://halisarah.github.io/SkinCare/Opportunity.html" style="display:inline-block;background:linear-gradient(135deg,#e8507a,#c93a62);color:#fff;border-radius:50px;padding:12px 32px;font-size:13px;font-family:'Jost',sans-serif;font-weight:600;letter-spacing:2px;text-transform:uppercase;text-decoration:none;">Become A Consultant →</a>
-    </div>
-    <div style="margin-bottom:24px;text-align:center;">
-      <button onclick="openEmailInbox()" class="btn-primary" style="box-shadow:0 8px 24px rgba(232,80,122,0.4);border:none;cursor:pointer;font-size:12px;">Return to Your Email to Access Your Saved Results</button>
-    </div>
-    <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.8;margin-bottom:16px;">If you have any questions, concerns or comments, please <a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;" >contact Hali Sarah</a> officially.</p>
-    <div style="margin-top:8px;"><p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--gold);font-style:italic;margin:0;">Skin-cerely yours, Hali Sarah Parsons</p><p style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);margin:4px 0 16px;text-transform:uppercase;">Independent Beauty Consultant</p></div>
-    <p style="font-size:10px;color:rgba(255,255,255,0.15);line-height:1.8;margin-bottom:20px;">This assessment was built by Hali Sarah Parsons, your new Mary Kay Independent Beauty Consultant!</p>
-    <div style="text-align:center;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15);">
-      <a href="https://halisarah.github.io/SkinCare/Assess.html" style="font-size:11px;color:rgba(255,255,255,0.3);padding:4px 8px;letter-spacing:1px;text-decoration:none;">Retake the Assessment</a>
-    </div>
-  </div>
-</div>
-
-
 <script>
 // ═══════════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════════
 const state = {
-  q1:[], q1other:'', q2:[], q2other:'', q3:'', q4:'', q5:'', q5other:'', q5b:'',
-  q6:'', q7:'', q7other:'', q8:[], q9:'', q9b:[],
+  q1:[], q1other:'',
+  q2:'',
+  age:'',                // age range (BracketAssess only)
+  income:'',             // income tier (BracketAssess only)
+  q3:'', q3b:[],
   products:[], emailModalMode:''
 };
 
@@ -825,15 +1034,8 @@ function goTo(id) {
   if(el){ el.classList.add('active'); window.scrollTo(0,0); }
   // Init signature canvas when profile screen becomes visible - needs longer delay for paint
   if(id === 'screen-profile') setTimeout(initCanvas, 300);
-  if(id==='screen-thankyou'){
-    setTimeout(initTySparkles,50);
-    const fn=(document.getElementById('prof-first')||{value:''}).value.trim();
-    const greet=document.getElementById('ty-name-greeting');
-    if(greet&&fn) greet.textContent='Congratulations, '+fn+'!';
-    const oppEl=document.getElementById('ty-opportunity');
-    const moneyEl=document.getElementById('int-money');
-    if(oppEl&&moneyEl&&moneyEl.checked) oppEl.style.display='block';
-  }
+  if(id==='screen-thankyou') setTimeout(initTySparkles, 50);
+  
   saveProgress(id);
 }
 
@@ -846,11 +1048,6 @@ document.querySelectorAll('.option-chip').forEach(chip => {
       this.classList.toggle('selected');
       const inp = document.getElementById('q1-other');
       inp.style.display = this.classList.contains('selected') ? 'block' : 'none';
-    } else if(this.id === 'q2-other-chip'){
-      this.classList.toggle('selected');
-      const inp = document.getElementById('q2-other');
-      if(this.classList.contains('selected')) inp.classList.add('visible');
-      else inp.classList.remove('visible');
     } else {
       this.classList.toggle('selected');
     }
@@ -874,10 +1071,12 @@ function getRadio(containerId){
 }
 
 // ═══════════════════════════════════════════════════
-//  QUESTION FLOWS
+//  QUESTION FLOWS — simplified 4-question version
 // ═══════════════════════════════════════════════════
+
+// Q1 → Q2
 function nextQ1(){
-  const basic = getSelected('q1-basic-options');
+  const basic    = getSelected('q1-basic-options');
   const specific = getSelected('q1-options');
   if(!basic.length){ alert('Please select at least one basic skin type (Normal/Dry or Combination/Oily).'); return; }
   state.q1 = [...basic, ...specific];
@@ -885,85 +1084,42 @@ function nextQ1(){
   if(state.q1other) state.q1 = state.q1.filter(v=>v!=='Other');
   goTo('screen-q2');
 }
+
+// Q2 (foundation yes/no) → Age (BracketAssess)
 function nextQ2(){
-  state.q2 = getSelected('q2-options');
-  state.q2other = document.getElementById('q2-other').value;
-  goTo('screen-q3');
+  state.q2 = getRadio('q2-options');
+  if(!state.q2){ alert('Please select an option.'); return; }
+  goTo('screen-age');
 }
-function nextQ3(){
-  state.q3 = getRadio('q3-options');
-  if(!state.q3){ alert('Please select an option.'); return; }
-  goTo('screen-q4');
+
+function nextAge(){
+  state.age = getRadio('age-options');
+  if(!state.age){ alert('Please select your age range.'); return; }
+  goTo('screen-income');
 }
-function nextQ4(){
-  state.q4 = getRadio('q4-options');
-  if(!state.q4){ alert('Please select an option.'); return; }
-  goTo('screen-q5');
-}
-function nextQ5(){
-  state.q5 = getRadio('q5-options');
-  if(!state.q5){ alert('Please select an option.'); return; }
-  state.q5other = document.getElementById('q5-other').value;
-  if(state.q5==='Foundation') goTo('screen-q5b');
-  else goTo('screen-q6');
-}
-function nextQ5b(){
-  state.q5b = getRadio('q5b-options');
-  if(!state.q5b){ alert('Please select an option.'); return; }
-  goTo('screen-q6');
-}
-function nextQ6(){
-  state.q6 = getRadio('q6-options');
-  if(!state.q6){ alert('Please select an option.'); return; }
-  goTo('screen-q7');
-}
-function nextQ7(){
-  state.q7 = getRadio('q7-options');
-  if(!state.q7){ alert('Please select an option.'); return; }
-  state.q7other = document.getElementById('q7-other').value;
-  populateQ8();
-  // Count specifics (exclude basic skin type options)
-  const excludeFromQ8 = new Set(['Dry','Oily','Normal/Dry','Combination/Oily']);
-  const specifics = state.q1.filter(v => !excludeFromQ8.has(v));
-  if(specifics.length <= 1){
-    // Auto-set q8 to whatever they chose (or empty if none) and skip
-    state.q8 = specifics;
-    goTo('screen-q9');
-  } else {
-    goTo('screen-q8');
-  }
-}
-function populateQ8(){
-  const c = document.getElementById('q8-options');
-  c.innerHTML='';
-  const excludeFromQ8 = new Set(['Dry','Oily','Normal/Dry','Combination/Oily']);
-  state.q1.forEach(val=>{
-    if(excludeFromQ8.has(val)) return;
-    const chip = document.createElement('div');
-    chip.className='option-chip'; chip.dataset.val=val; chip.textContent=val;
-    chip.addEventListener('click', function(){ this.classList.toggle('selected'); });
-    c.appendChild(chip);
-  });
-}
-function nextQ8(){
-  state.q8 = getSelected('q8-options');
-  if(!state.q8.length){ alert('Please select your top priorities.'); return; }
+
+function nextIncome(){
+  state.income = getRadio('income-options');
+  if(!state.income){ alert('Please select an income bracket.'); return; }
+  state.incomeOther = document.getElementById('income-other').value;
   goTo('screen-q9');
 }
-function nextQ9(){
-  state.q9 = getRadio('q9-options');
-  if(!state.q9){ alert('Please select an option.'); return; }
-  if(state.q9==='Yes') goTo('screen-q9b');
-  else buildResults();
+
+// Q3 — body assessment yes/no (screen-q9)
+function nextQ3New(){
+  state.q3 = getRadio('q9-options');
+  if(!state.q3){ alert('Please select an option.'); return; }
+  if(state.q3==='Yes') goTo('screen-q9b');
+  else buildResultsNew();
 }
-function backFromQ9(){
-  const excludeFromQ8 = new Set(['Dry','Oily','Normal/Dry','Combination/Oily']);
-  const specifics = (state.q1||[]).filter(v => !excludeFromQ8.has(v));
-  goTo(specifics.length <= 1 ? 'screen-q7' : 'screen-q8');
+
+// Q4 — body skin selections (screen-q9b)
+function buildResultsNew(){
+  if(state.q3==='Yes') state.q3b = getSelected('q9b-options');
+  buildResults();
 }
+
 function backFromResults(){
-  // Results comes after Q9 (or Q9b) — back should go to Q9
-  // Q9 back respects the Q8 bypass, so just go to Q9
   goTo('screen-q9');
 }
 
@@ -973,347 +1129,302 @@ function backFromResults(){
 function has(arr,v){ return arr.includes(v); }
 
 // ═══════════════════════════════════════════════════
-//  BUILD RESULTS
+//  BUILD RESULTS — simplified 2-tier logic
+//  Tier 1 (Start with): main skincare set + body results
+//  Tier 2 (Near future): everything else
+//  Q1 drives all product logic (treated as Q8 concerns)
+//  Q2 (foundation yes/no) drives foundation recommendation
+//  Q1 goal mapping: Extremely Dry→Hydrated, Skin Tone Variations→Even Skin-Tone,
+//                   Sagging→Firm, Fragile→Resilient, Large Pores→Improved Texture
 // ═══════════════════════════════════════════════════
 function buildResults(){
-  if(state.q9==='Yes') state.q9b = getSelected('q9b-options');
+  if(state.q3==='Yes') state.q3b = getSelected('q9b-options');
 
-  const products = [];
-  const q1=state.q1, q2=state.q2, q8=state.q8, age=state.q6, income=state.q7;
-  // state.q8 is always correctly populated after nextQ7():
-  //   - If user had >1 specific concern → they chose from Q8 screen
-  //   - If user had <=1 specific concern → auto-set from their Q1 selection
-  // So q8 is the single source of truth for specific concerns.
-  // hasDry/hasOily/hasExDry/hasAcne/hasLargePores check q1 too because those
-  // basic skin types live in q1 and are excluded from the Q8 chip pool.
-  const hasDry        = has(q1,'Normal/Dry')    || has(q1,'Dry')         || has(q8,'Dry');
-  const hasOily       = has(q1,'Combination/Oily') || has(q1,'Oily')     || has(q8,'Oily') || has(q1,'Excess Oil') || has(q8,'Excess Oil');
-  const hasExcessOil  = has(q8,'Excess Oil');
-  const hasExDry      = has(q1,'Extremely Dry') || has(q8,'Extremely Dry');
-  const hasAcne       = has(q1,'Acne')          || has(q8,'Acne');
-  const hasDryLips    = has(q8,'Dry Lips');
-  const hasWrinkles   = has(q8,'Wrinkles');
-  const hasExpr       = has(q8,'Expression Lines');
-  const hasLargePores = has(q1,'Large Pores')   || has(q8,'Large Pores');
-  const hasImprovedTex= has(q8,'Improved Skin-Texture') || has(q2,'Improved Skin-Texture');
-  const hasPuffy      = has(q8,'Puffy Eyes');
-  const hasSagging    = has(q8,'Sagging');
-  const hasRedness    = has(q8,'Redness');
-  const hasSkinTone   = has(q8,'Skin Tone Variations');
-  const hasStubborn   = has(q8,'Stubborn Make-Up Residue') || has(q1,'Stubborn Make-Up Residue');
-  const hasFirm       = has(q2,'Firm');
-  const incomeNamed   = income==='tier1' || income==='tier2' || income==='tier3';
-  const isOlderAge    = age==='40s-50s' || age==='60s-70s' || age==='80+';
+  var base     = [];   // BASE tier — always shown (Start with:)
+  var future   = [];   // FUTURE tier — tier2/tier3 only
+  var bodyProds= [];   // Body — always last
 
-  // Pollutant / foundation messages
-  const pollMsg  = document.getElementById('pollutant-message');
-  const foundMsg = document.getElementById('foundation-finder-msg');
-  pollMsg.innerHTML=''; foundMsg.innerHTML='';
-  if(state.q5==='No Method'||state.q5==='Other'){
-    pollMsg.innerHTML=`<div class="info-box">Take a look at your car windshield. Everyday similar pollutants are landing on your face and entering your pores. With a foundation, it creates a breathable layer that pollutants can land on instead of directly on your face. At night, you can just wash it all down the drain!<br><br><a href="https://www.marykay.com/sistahay/en/foundation-finder.html" target="_blank">Get Your Foundation Qualification</a></div>`;
-  }
-  if(state.q5==='Foundation' && state.q5b==='No'){
-    foundMsg.innerHTML=`<div class="info-box"><a href="https://www.marykay.com/sistahay/en/foundation-finder.html" target="_blank">Get Your Foundation Qualification</a></div>`;
-  }
+  var q1 = state.q1 || [];
+  var age    = state.age    || '';
+  var income = state.income || '';
 
-  // Stubborn Make-Up Residue
-  if(hasStubborn){
-    products.push({name:"Mary Kay® Oil-Free Eye Makeup Remover", url:"https://www.marykay.com/sistahay/en/best-sellers/mary-kay-oil-free-eye-makeup-remover-990299632/990299632US10179024.html"});
-  }
+  var isTeen  = age === 'Teen';
+  var is20s30 = age === '20s-30s';
+  var is40s50 = age === '40s-50s';
+  var is60s70 = age === '60s-70s';
+  var is80p   = age === '80+';
+  var incomeNamed = income === 'tier1' || income === 'tier2' || income === 'tier3';
+  var isTier2or3  = income === 'tier2' || income === 'tier3';
 
-  // Excess Oil (Q8 second round)
-  if(hasExcessOil){
-    products.push({name:"Beauty Blotters® Oil-Absorbing Tissues", url:"https://www.marykay.com/sistahay/en/skincare/concern/blemishes-acne/beauty-blotters-oilabsorbing-tissues-180204/180204US10041758.html"});
-    // Translucent Loose Powder — FUTURE: tier2/tier3 only
-    if(income==='tier2' || income==='tier3'){
-      products.push({name:"Mary Kay® Translucent Loose Powder", url:"https://www.marykay.com/sistahay/en/makeup/face/loose-powder/mary-kay-translucent-loose-powder-111250/111250US10060182.html", future:true});
-    }
-  }
+  function hasQ(v){ return q1.includes(v); }
 
-  // TEEN rules
-  if(age==='Teen'){
-    // Expression Lines or Wrinkles → Eye Cream always
-    if(has(q8,'Expression Lines') || has(q8,'Wrinkles')){
-      products.push({name:"TimeWise® Eye Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-eye-cream-990307131/990307131US10217408.html"});
-    }
-    if((has(q8,'Combination/Oily') || has(q8,'Oily')) && !hasAcne){
-      products.push({name:"Mary Kay® Mattifying Regimen", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html"});
-    }
-    if(hasExDry && hasAcne){
-      products.push({name:"Clear Proof® Clarifying Cleansing Gel", url:"https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-clarifying-cleansing-gel-10233551/990331674US10233551.html"});
-      if(hasDry) products.push({name:"Mary Kay® Balancing Toner", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-balancing-toner-990311804/990311804US10201384.html", note:"Use 2nd in your regimen"});
-      products.push({name:"Mary Kay® Hydrating Moisturizer", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-moisturizer-990321903/990321903US10201374.html"});
-    }
-    if(!hasAcne && hasDry){
-      products.push({name:"Mary Kay® Hydrating Regimen", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html"});
-    }
-    // Teen + Extremely Dry + NOT Acne → Intense Moisturizing Cream
-    if(hasExDry && !hasAcne){
-      products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html"});
-    }
-    if(hasAcne){
-      products.push({name:"Clear Proof® Acne System Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-system-10058977/10058977US10058977.html"});
-    }
-  }
+  var hasDry        = hasQ('Normal/Dry')  || hasQ('Dry');
+  var hasOily       = hasQ('Combination/Oily') || hasQ('Oily') || hasQ('Excess Oil');
+  var hasExDry      = hasQ('Extremely Dry');
+  var hasAcne       = hasQ('Acne');
+  var hasExpr       = hasQ('Expression Lines');
+  var hasWrinkles   = hasQ('Wrinkles');
+  var hasSagging    = hasQ('Sagging');
+  var hasLargePores = hasQ('Large Pores');
+  var hasExcessOil  = hasQ('Excess Oil');
+  var hasDryLips    = hasQ('Dry Lips');
+  var hasPuffy      = hasQ('Puffy Eyes');
+  var hasRedness    = hasQ('Redness');
+  var hasFragile    = hasQ('Fragile');
+  var hasSkinTone   = hasQ('Skin Tone Variations');
+  var hasStubborn   = hasQ('Stubborn Make-Up Residue');
+  var hasDarkCirc   = hasQ('Dark Circles');
 
-  // Dry Lips
-  if(hasDryLips){
-    products.push({name:"Satin Lips® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/satin-collection/white-tea-citrus-satin-lips-set-300484/300484US10098324.html"});
-  }
-
-  // Q2 Goal: Hydrated
-  if(has(q2,'Hydrated')){
-    // Combination/Oily → Oil-Free Hydrating Gel (all incomes)
-    if(has(q1,'Combination/Oily') || has(q1,'Oily') || has(q1,'Excess Oil')){
-      products.push({name:"Mary Kay® Oil-Free Hydrating Gel", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-oilfree-hydrating-gel-990303404/990303404US10197545.html"});
-    }
-    // Normal/Dry + ExDry + tier2/tier3 → Intense Moisturizing Cream (FUTURE)
-    if((has(q1,'Normal/Dry') || has(q1,'Dry')) && hasExDry && (income==='tier2' || income==='tier3') && age!=='Teen'){
-      products.push({name:"Mary Kay® Intense Moisturizing Cream", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html", future:true});
-    }
-  }
-
-  // Q2 Goal: Even Skin-Tone → Balancing Toner (FUTURE: tier2/tier3, NOT Teen, NOT Acne)
-  if(has(q2,'Even Skin-Tone') && age!=='Teen' && !hasAcne && (income==='tier2' || income==='tier3')){
-    products.push({name:"Mary Kay® Balancing Toner", url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-balancing-toner-990311804/990311804US10201384.html", future:true});
-  }
-
-  // PHA+AHA Resurfacer: only Improved Skin-Texture or Radiant in Q2, no Wrinkles, and NOT age 80+ (Retinol 0.3 conflict)
-  const willGetRetinol03 = hasWrinkles && age === '80+';
-  const wantsResurface = has(q2,'Improved Skin-Texture') || has(q2,'Radiant');
-  if(wantsResurface && !hasWrinkles && !willGetRetinol03){
-    products.push({name:"Mary Kay Clinical Solutions® PHA + AHA Resurfacer", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-pha-aha-resurfacer-990284881/990284881US10177904.html"});
-  }
-
-  // Skin Firmness goal
-  if(hasFirm){
-    products.push({name:"TimeWise Replenishing Serum C+E®", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-replenishing-serum-c-e-990279409/990279409US10171886.html"});
-  }
-
-  // 20s-30s rules
-  if(age==='20s-30s'){
-    const beyondOily = hasWrinkles && (hasLargePores||hasImprovedTex) && hasExpr && hasOily && incomeNamed;
-    const beyondDry  = hasWrinkles && (hasLargePores||hasImprovedTex) && hasExpr && hasDry  && incomeNamed;
-    const ultDry     = hasWrinkles && hasExpr && hasDry  && !hasLargePores && !hasImprovedTex;
-    const ultOily    = hasWrinkles && hasExpr && hasOily && !hasLargePores && !hasImprovedTex;
-    const mirDry     = hasExpr && hasDry  && !hasWrinkles;
-    const mirOily    = hasExpr && hasOily && !hasWrinkles;
-
-    if(beyondDry)       products.push({name:"Beyond Ultimate TimeWise® Miracle Set® (Normal to Dry)",       url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-normal-to-dry-990315016/990315016US10223246.html"});
-    else if(beyondOily) products.push({name:"Beyond Ultimate TimeWise® Miracle Set® (Combination to Oily)", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-combination-to-oily-990315017/990315017US10223245.html"});
-    else if(ultDry)     products.push({name:"Ultimate TimeWise® Miracle Set® (Normal to Dry)",              url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-normal-to-dry-990314981/990314981US10223243.html"});
-    else if(ultOily)    products.push({name:"Ultimate TimeWise® Miracle Set® (Combination to Oily)",        url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-combination-to-oily-990314980/990314980US10223244.html"});
-    else if(mirDry)     products.push({name:"TimeWise® Miracle Set® (Normal/Dry)",                          url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-normal-dry-990312970/990312970US10217417.html"});
-    else if(mirOily)    products.push({name:"TimeWise® Miracle Set® (Combination/Oily)",                    url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-combination-oily-990312971/990312971US10217415.html"});
-    // Fallback: no Expression Lines selected — recommend regimen by skin type
-    else if(!hasExpr && hasDry)  products.push({name:"Mary Kay® Hydrating Regimen",   url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html"});
-    else if(!hasExpr && hasOily) products.push({name:"Mary Kay® Mattifying Regimen",  url:"https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html"});
-
-    // 20s-30s FUTURE add-ons — tier2/tier3 only
-    const hasBeyondOrUlt = products.some(p=>p.name.includes('Beyond Ultimate') || p.name.includes('Ultimate TimeWise'));
-    if(income==='tier2' || income==='tier3'){
-      // Wrinkle Filler: Wrinkles + tier2/tier3
-      if(hasWrinkles){
-        products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product.", future:true});
-      }
-      // Eye Renewal Cream: Sagging + NOT getting set that includes eye cream
-      if(hasSagging && !hasBeyondOrUlt){
-        products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html", future:true});
-      }
-      // Firming Eye Cream: Puffy Eyes (no Sagging) + NOT getting set that includes eye cream
-      if(hasPuffy && !hasSagging && !hasBeyondOrUlt){
-        products.push({name:"TimeWise® Firming Eye Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-firming-eye-cream-10225538/990322933US10225538.html", note:"Use last in your skin regimen", future:true});
-      }
-    }
-  }
-
-  // 40s-50s
-  if(age==='40s-50s'){
-    products.push({name:"TimeWise Repair® Volu-Firm® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-set-990324679/990324679US10211954.html"});
-    // FUTURE add-ons — tier2/tier3 only
-    if(income==='tier2' || income==='tier3'){
-      // Eye Renewal Cream: Sagging or Puffy Eyes
-      if(hasSagging || hasPuffy){
-        products.push({name:"TimeWise Repair® Volu-Firm® Eye Renewal Cream", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html", future:true});
-      }
-      // Lifting Serum: Sagging
-      if(hasSagging){
-        products.push({name:"TimeWise Repair® Volu-Firm® Advanced Lifting Serum", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-advanced-lifting-serum-300528/300528US10210233.html", note:"Use last in your routine", future:true});
-      }
-      // Wrinkle Filler: Wrinkles
-      if(hasWrinkles){
-        products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product.", future:true});
-      }
-    }
-  }
-
-  // 60s-70s or 80+
-  if(age==='60s-70s' || age==='80+'){
-    products.push({name:"TimeWise Repair® Ultimate Volu-Firm® Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-ultimate-volu-firm-set-990324680/990324680US10236194.html"});
-    // FUTURE add-ons — income gated
-    if(income==='tier3'){
-      // Bio-Cellulose Mask: Sagging + tier3 ONLY
-      if(hasSagging){
-        products.push({name:"TimeWise Repair® Lifting Bio-Cellulose Mask", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-lifting-biocellulose-mask-301079/301079US10107547.html", future:true});
-      }
-      // Revealing Radiance Facial Peel: Q2 Radiant + tier3 ONLY
-      if(has(q2,'Radiant')){
-        products.push({name:"TimeWise Repair® Revealing Radiance® Facial Peel", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-revealing-radiance-facial-peel-300524/300524US10088897.html", future:true});
-      }
-    }
-    if(income==='tier2' || income==='tier3'){
-      // Lifting Serum: Sagging
-      if(hasSagging){
-        products.push({name:"TimeWise Repair® Volu-Firm® Advanced Lifting Serum", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-advanced-lifting-serum-300528/300528US10210233.html", note:"Use last in your routine", future:true});
-      }
-      // Wrinkle Filler: Wrinkles
-      if(hasWrinkles){
-        products.push({name:"TimeWise Repair® Volu-Fill® Deep Wrinkle Filler", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html", note:"Apply before moisturizer. If used during the day, always follow with an SPF-based product.", future:true});
-      }
-    }
-  }
-
-  // Wrinkles combos — all Clinical Solutions are FUTURE (incomeNamed + NOT Teen)
-  if(hasWrinkles && age!=='Teen' && incomeNamed){
-    if(age==='20s-30s'||age==='40s-50s'||age==='60s-70s'){
-      products.push({name:"Mary Kay Clinical Solutions® Dynamic Wrinkle Limiter™", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-dynamic-wrinkle-limiter-10227734/990320771US10227734.html", future:true});
-    }
-    if(age==='80+'){
-      products.push({name:"Mary Kay Clinical Solutions® Retinol 0.3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-retinol-03-10238881/990327276US10238881.html", future:true});
-    }
-    if(hasExDry){
-      products.push({name:"Mary Kay Clinical Solutions® HA + Ceramide Hydrator", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ha-ceramide-hydrator-990284879/990284879US10177906.html", future:true});
-    }
-    // C + Resveratrol: always when wrinkles + incomeNamed + not Teen
-    products.push({name:"Mary Kay Clinical Solutions® C + Resveratrol Line-Reducer", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-c-resveratrol-line-reducer-990284878/990284878US10177899.html", future:true});
-  }
-
-  // Skin Tone — FUTURE: incomeNamed + NOT Teen
-  if(hasSkinTone && age!=='Teen' && incomeNamed){
-    products.push({name:"Mary Kay Clinical Solutions® Ferulic + Niacinamide Brightener", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ferulic-niacinamide-brightener-990284880/990284880US10177902.html", future:true});
-  }
-
-  const hasFragile    = has(q1,'Fragile') || has(q8,'Fragile');
-
-  // Redness alone → Barrier Restore
-  // Fragile alone → Barrier Restore
-  // Fragile + Redness (either in Q1 or Q8, as long as one confirmed in Q8) → Barrier Restore
-  const rnQ1 = has(q1,'Redness'), rnQ8 = has(q8,'Redness');
-  const frQ1 = has(q1,'Fragile'), frQ8 = has(q8,'Fragile');
-  const barrierCondition = rnQ8 || frQ8 || (rnQ1 && frQ8) || (frQ1 && rnQ8);
-  // Barrier Restore — FUTURE: incomeNamed + NOT Teen
-  if(barrierCondition && age!=='Teen' && incomeNamed){
-    products.push({name:"Mary Kay Clinical Solutions® Barrier Restore 1:1:3", url:"https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/clinical-solutions-barrier-restore-113-10234061/990327732US10234061.html", future:true});
-  }
-
-  // Extremely Dry (non-Teen) — Extra Emollient Night Cream BASE (no income gate)
-  if(hasExDry && age!=='Teen'){
-    products.push({name:"Mary Kay® Extra Emollient Night Cream", url:"https://www.marykay.com/sistahay/en/body-sun/body-sun-product-type/lotion-cream/mary-kay-extra-emollient-night-cream-100407/100407US10072682.html", note:"Apply after all other moisturizers"});
-  }
-
-  // Puffy Eyes
-  if(hasPuffy){
-    products.push({name:"Mary Kay® Hydrogel Eye Patches, pk./30 pairs", url:"https://www.marykay.com/sistahay/en/skincare/product/mask/mary-kay-hydrogel-eye-patches-pk30-pairs-990302909/990302909US10203701.html"});
-  }
-
-  // Large Pores / Improved Skin-Texture → Microdermabrasion only if chosen in Q8 (priority round)
-  // If Large Pores chosen in Q8 but NOT Improved Skin-Texture → Pore Minimizer instead
-  const hasBeyond = products.some(p=>p.name.includes('Beyond Ultimate'));
-  const largePoresInQ8 = has(q8,'Large Pores');
-  const improvedTexInQ8 = has(q8,'Improved Skin-Texture');
-  const largePoresInQ1only = has(q1,'Large Pores') && !largePoresInQ8;
-
-  if(!hasBeyond && age!=='Teen'){
-    if(improvedTexInQ8 || (largePoresInQ8 && improvedTexInQ8)){
-      // Full microderm qualification
-      products.push({name:"TimeWise® Microdermabrasion Plus Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-microdermabrasion-plus-set-10198866/990308715US10198866.html"});
-    } else if(largePoresInQ8 && !improvedTexInQ8){
-      // Large Pores in Q8 only — Pore Minimizer, but only if Microderm not already added
-      const hasMicroderm = products.some(p=>p.name.includes('Microdermabrasion'));
-      if(!hasMicroderm){
-        products.push({name:"TimeWise® Pore Minimizer", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-pore-minimizer-990303243/990303243US10198715.html"});
-      }
-    }
-    // Large Pores in Q1 only (not confirmed in Q8) → no recommendation
-  }
-  if(age==='Teen' && (improvedTexInQ8 || largePoresInQ8)){
-    products.push({name:"TimeWise® Microdermabrasion Plus Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-microdermabrasion-plus-set-10198866/990308715US10198866.html"});
-  }
-
-  // Nourishing Oil: Natural or No Preference + BOTH Dry AND Oily selected in Q1 (combination skin)
-  const hasBothDryOily = (has(q1,'Normal/Dry') || has(q1,'Dry') || has(q1,'Extremely Dry')) && (has(q1,'Combination/Oily') || has(q1,'Oily') || has(q1,'Excess Oil'));
-  if((state.q4==='Natural' || state.q4==='No Preference') && hasBothDryOily){
-    products.push({name:"Mary Kay® Nourishing Oil", url:"https://www.marykay.com/sistahay/en/skincare/product/serum-and-oil/mary-kay-nourishing-oil-10235072/990321697US10235072.html"});
-  } else if(state.q4==='Natural' && products.length===0){
-    // Pure fallback — natural preference but no other conditions matched
-    products.push({name:"Mary Kay® Nourishing Oil", url:"https://www.marykay.com/sistahay/en/skincare/product/serum-and-oil/mary-kay-nourishing-oil-10235072/990321697US10235072.html"});
-  }
-
-  // BODY
-  if(state.q9==='Yes'){
-    if(has(state.q9b,'Sunburn Prone')) products.push({name:"Broad Spectrum Body Sun Protection SPF 50", url:"https://www.marykay.com/sistahay/en/body-sun/body-sun-concern/sun/mary-kay-sunscreen-spf-50-10237287/990327133US10237287.html"});
-    if(has(state.q9b,'Sunburn Prone')) products.push({name:"Special-Edition† Mary Kay® After-Sun Replenishing Gel", url:"https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-sun-care/special-edition-mary-kay-after-sun-replenishing-gel-10229067/990326241US10229067.html"});
-    // Dry Feet and/or Dry Hands → Satin Hands, note adjusts based on selection
-    const hasDryFeet  = has(state.q9b,'Dry Feet');
-    const hasDryHands = has(state.q9b,'Dry Hands');
-    if(hasDryFeet || hasDryHands){
-      let satinNote = '';
-      if(hasDryFeet && hasDryHands){
-        satinNote = 'Use on your hands and feet before bed and sleep with cozy socks on. <a href="https://www.marykay.com/sistahay/en/search?q=satin+hands&lang=null" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;" >See all Satin Hands products</a>';
-      } else if(hasDryFeet){
-        satinNote = 'Use on your feet before bed and sleep with cozy socks on. <a href="https://www.marykay.com/sistahay/en/search?q=satin+hands&lang=null" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;" >See all Satin Hands products</a>';
-      } else {
-        satinNote = '<a href="https://www.marykay.com/sistahay/en/search?q=satin+hands&lang=null" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;" >See all Satin Hands products</a>';
-      }
-      products.push({name:"Fragrance-Free Satin Hands® Pampering Set", url:"https://www.marykay.com/sistahay/en/skincare/collection/satin-collection/fragrancefree-satin-hands-pampering-set-990331028/990331028US10238148.html", note: satinNote});
-    }
-    if(has(state.q9b,'Dry Skin'))  products.push({name:"Hydrating Lotion", url:"https://www.marykay.com/sistahay/en/gifts/gifts-for/gifts-her/hello-clean-10080376/10080376US10080376.html"});
-    if(has(state.q9b,'Cellulite')) products.push({name:"TimeWise® Targeted-Action® Toning Lotion", url:"https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-targeted-action-toning-lotion-98000782/98000782US10219506.html"});
-  }
-
-  // Deduplicate
-  const seen = new Set();
-  const unique = products.filter(p=>{ if(seen.has(p.name)) return false; seen.add(p.name); return true; });
-  state.products = unique;
-
-  // Render results list
-  const list = document.getElementById('results-list');
-  const noRes = document.getElementById('no-results-section');
-  const actionSec = document.getElementById('results-action-section');
-  list.innerHTML='';
-
-  if(unique.length===0){
-    noRes.style.display='block'; actionSec.style.display='none';
+  var foundMsg = document.getElementById('foundation-finder-msg');
+  var pollMsg  = document.getElementById('pollutant-message');
+  if(foundMsg) foundMsg.innerHTML = '';
+  if(pollMsg)  pollMsg.innerHTML  = '';
+  if(state.q2 === 'Yes'){
+    if(foundMsg) foundMsg.innerHTML = '<div class="info-box">❖ <a href="https://www.marykay.com/sistahay/en/foundation-finder.html" target="_blank" style="color:var(--pink);font-weight:500;">Find Your Foundation Match →</a></div>';
   } else {
-    noRes.style.display='none'; actionSec.style.display='block';
-    const isTier2or3 = income==='tier2' || income==='tier3';
-    const baseProducts   = unique.filter(p=>!p.future);
-    const futureProducts = unique.filter(p=>p.future);
+    if(pollMsg) pollMsg.innerHTML = '<div class="info-box">Did you know? Foundation creates a breathable layer that keeps everyday pollutants off your skin. <a href="https://www.marykay.com/sistahay/en/foundation-finder.html" target="_blank" style="color:var(--pink);font-weight:500;">Try the Foundation Finder →</a></div>';
+  }
 
-    // Render BASE products under "Start with:"
-    if(baseProducts.length){
-      const startLabel = document.createElement('li');
-      startLabel.style.cssText='font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:8px 0 4px;border-bottom:none;font-weight:600;';
-      startLabel.textContent='Start with:';
-      list.appendChild(startLabel);
-      baseProducts.forEach(p=>{
-        const li = document.createElement('li');
-        li.innerHTML=`<a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:12px;color:var(--gray);font-style:italic;">${p.note}</span>`:''}`;
-        list.appendChild(li);
-      });
+  // ══════════════════════════════════════════════════════════════
+  // MAIN SKINCARE SET — age determines which set, chips refine it
+  // ══════════════════════════════════════════════════════════════
+
+  // ── TEEN ──
+  if(isTeen){
+    if(hasAcne){
+      if(hasExDry){
+        base.push({name:'Clear Proof® Clarifying Cleansing Gel', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-clarifying-cleansing-gel-10233551/990331674US10233551.html'});
+        if(hasDry) base.push({name:'Mary Kay® Balancing Toner', url:'https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-balancing-toner-990311804/990311804US10201384.html', note:'Use 2nd in your regimen.'});
+        base.push({name:'Mary Kay® Hydrating Moisturizer', url:'https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-moisturizer-990321903/990321903US10201374.html'});
+      } else {
+        base.push({name:'Clear Proof® Acne System Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-system-10058977/10058977US10058977.html'});
+      }
+      if(isTier2or3) future.push({name:'Mary Kay® Oil-Free Hydrating Gel', url:'https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-oilfree-hydrating-gel-990303404/990303404US10197545.html'});
+    } else {
+      if(hasOily && !hasDry) base.push({name:'Mary Kay® Mattifying Regimen', url:'https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html'});
+      else {
+        base.push({name:'Mary Kay® Hydrating Regimen', url:'https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html'});
+        base.push({name:'Mary Kay® Hydrating Moisturizer', url:'https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-moisturizer-990321903/990321903US10201374.html'});
+      }
+      if(hasExDry) base.push({name:'Mary Kay® Intense Moisturizing Cream', url:'https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html'});
+    }
+    if((hasExpr || hasWrinkles) && !hasAcne){
+      base.push({name:'TimeWise® Eye Cream', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-eye-cream-990307131/990307131US10217408.html'});
+    }
+    if(hasDryLips) base.push({name:'Satin Lips® Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/satin-collection/white-tea-citrus-satin-lips-set-300484/300484US10098324.html'});
+
+  // ── 20s-30s ──
+  } else if(is20s30){
+    if(hasSagging && incomeNamed){
+      // Sagging with income → Volu-Firm upgrade
+      if(hasOily) base.push({name:'TimeWise Repair® Volu-Firm® Set Combination/Oily', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-set-990324679/990324679US10211954.html'});
+      else         base.push({name:'TimeWise Repair® Volu-Firm® Set Normal/Dry', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-set-990324679/990324679US10211954.html'});
+      if(isTier2or3){
+        future.push({name:'TimeWise Repair® Volu-Firm® Eye Renewal Cream', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html'});
+        future.push({name:'TimeWise Repair® Volu-Firm® Advanced Lifting Serum', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-advanced-lifting-serum-300528/300528US10210233.html', note:'Use last in your routine.'});
+      }
+    } else if(hasExpr && hasWrinkles && hasLargePores && incomeNamed){
+      if(hasOily) base.push({name:'Beyond Ultimate TimeWise® Miracle Set® Combination/Oily', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-combination-to-oily-990315017/990315017US10223245.html'});
+      else         base.push({name:'Beyond Ultimate TimeWise® Miracle Set® Normal/Dry', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/beyond-ultimate-timewise-miracle-set-normal-to-dry-990315016/990315016US10223246.html'});
+    } else if(hasExpr && hasWrinkles){
+      if(hasOily) base.push({name:'Ultimate TimeWise® Miracle Set® Combination/Oily', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-combination-to-oily-990314980/990314980US10223244.html'});
+      else         base.push({name:'Ultimate TimeWise® Miracle Set® Normal/Dry', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/ultimate-timewise-miracle-set-normal-to-dry-990314981/990314981US10223243.html'});
+    } else if(hasWrinkles){
+      // Wrinkles only — base miracle set, Ultimate as future
+      if(hasOily) base.push({name:'TimeWise® Miracle Set Combination/Oily', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-combination-oily-990312971/990312971US10217415.html'});
+      else         base.push({name:'TimeWise® Miracle Set Normal/Dry', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-normal-dry-990312970/990312970US10217417.html'});
+      if(isTier2or3){
+        future.push({name:'TimeWise Repair® Volu-Fill® Deep Wrinkle Filler', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html', note:'Apply before moisturizer. If used during the day, always follow with an SPF-based product.'});
+      }
+    } else if(hasExpr){
+      if(hasOily) base.push({name:'TimeWise® Miracle Set Combination/Oily', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-combination-oily-990312971/990312971US10217415.html'});
+      else         base.push({name:'TimeWise® Miracle Set Normal/Dry', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-miracle-set-normal-dry-990312970/990312970US10217417.html'});
+      // Eye Cream as sample option only — not in product list
+      base.push({name:'TimeWise® Eye Cream', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-eye-cream-990307131/990307131US10217408.html', sampleOnly:true});
+    } else if(hasAcne){
+      base.push({name:'Clear Proof® Acne System Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-system-10058977/10058977US10058977.html'});
+    } else {
+      // Default regimen
+      if(hasOily) base.push({name:'Mary Kay® Mattifying Regimen', url:'https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-mattifying-regimen-990322396/990322396US10230673.html'});
+      else         base.push({name:'Mary Kay® Hydrating Regimen', url:'https://www.marykay.com/sistahay/en/skincare/collection/mary-kay-skin-care/mary-kay-hydrating-regimen-990322397/990322397US10230672.html'});
+    }
+    // Acne note alongside sets
+    if(hasAcne && (hasWrinkles || hasExpr || hasSagging)){
+      if(hasOily) base.push({name:'Clear Proof® Acne Treatment Gel', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-treatment-gel-10059071/10059071US10095054.html', note:'Consider adding this to spot treat your acne!'});
+      else         base.push({name:'Clear Proof® Deep-Cleansing Charcoal Mask', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clearproof-deepcleansing-charcoal-mask-301029/301029US10094148.html', note:'Help combat your acne with this!'});
+    }
+    // 20s-30s add-ons
+    if(hasPuffy && !hasSagging && isTier2or3){
+      future.push({name:'TimeWise® Firming Eye Cream', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-firming-eye-cream-10225538/990322933US10225538.html', note:'Use last in your skin regimen.'});
     }
 
-    // Render FUTURE products only for tier2/tier3
-    if(futureProducts.length && isTier2or3){
-      const futureLabel = document.createElement('li');
-      futureLabel.style.cssText='font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:16px 0 4px;border-bottom:none;font-weight:600;';
-      futureLabel.textContent='Think about these in the near future:';
-      list.appendChild(futureLabel);
-      futureProducts.forEach(p=>{
-        const li = document.createElement('li');
-        li.innerHTML=`<a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:12px;color:var(--gray);font-style:italic;">${p.note}</span>`:''}`;
-        list.appendChild(li);
-      });
+  // ── 40s-50s ──
+  } else if(is40s50){
+    base.push({name:'TimeWise Repair® Volu-Firm® Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-set-990324679/990324679US10211954.html'});
+    if(hasAcne){
+      if(hasOily) base.push({name:'Clear Proof® Acne Treatment Gel', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-treatment-gel-10059071/10059071US10095054.html', note:'Spot treat your acne alongside your Volu-Firm routine.'});
+      else         base.push({name:'Clear Proof® Deep-Cleansing Charcoal Mask', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clearproof-deepcleansing-charcoal-mask-301029/301029US10094148.html', note:'Help combat acne alongside your Volu-Firm routine.'});
+    }
+    if(isTier2or3){
+      if(hasSagging || hasPuffy) future.push({name:'TimeWise Repair® Volu-Firm® Eye Renewal Cream', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-eye-renewal-cream-990324799/990324799US10208547.html'});
+      if(hasSagging) future.push({name:'TimeWise Repair® Volu-Firm® Advanced Lifting Serum', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-advanced-lifting-serum-300528/300528US10210233.html', note:'Use last in your routine.'});
+      if(hasWrinkles) future.push({name:'TimeWise Repair® Volu-Fill® Deep Wrinkle Filler', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html', note:'Apply before moisturizer. If used during the day, always follow with an SPF-based product.'});
+    }
+
+  // ── 60s-70s or 80+ ──
+  } else if(is60s70 || is80p){
+    base.push({name:'TimeWise Repair® Ultimate Volu-Firm® Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-ultimate-volu-firm-set-990324680/990324680US10236194.html'});
+    if(hasAcne){
+      if(hasOily) base.push({name:'Clear Proof® Acne Treatment Gel', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clear-proof-acne-treatment-gel-10059071/10059071US10095054.html', note:'Spot treat your acne alongside your routine.'});
+      else         base.push({name:'Clear Proof® Deep-Cleansing Charcoal Mask', url:'https://www.marykay.com/sistahay/en/skincare/collection/clear-proof/clearproof-deepcleansing-charcoal-mask-301029/301029US10094148.html', note:'Help combat acne alongside your routine.'});
+    }
+    if(isTier2or3){
+      if(hasSagging) future.push({name:'TimeWise Repair® Volu-Firm® Advanced Lifting Serum', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-advanced-lifting-serum-300528/300528US10210233.html', note:'Use last in your routine.'});
+      if(hasSagging && income==='tier3') future.push({name:'TimeWise Repair® Lifting Bio-Cellulose Mask', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-lifting-biocellulose-mask-301079/301079US10107547.html'});
+      if(hasWrinkles) future.push({name:'TimeWise Repair® Volu-Fill® Deep Wrinkle Filler', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise-repair/timewise-repair-volufirm-deep-wrinkle-filler-300543/300543US10210234.html', note:'Apply before moisturizer. If used during the day, always follow with an SPF-based product.'});
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // ADDITIONAL BASE PRODUCTS (all ages where applicable)
+  // ══════════════════════════════════════════════════════════════
+  if(hasDryLips && !isTeen) base.push({name:'Satin Lips® Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/satin-collection/white-tea-citrus-satin-lips-set-300484/300484US10098324.html'});
+  if(hasPuffy && !isTeen)   base.push({name:'Mary Kay® Hydrogel Eye Patches, pk./30 pairs', url:'https://www.marykay.com/sistahay/en/skincare/product/mask/mary-kay-hydrogel-eye-patches-pk30-pairs-990302909/990302909US10203701.html'});
+  if(hasExDry && !isTeen)   base.push({name:'Mary Kay® Extra Emollient Night Cream', url:'https://www.marykay.com/sistahay/en/body-sun/body-sun-product-type/lotion-cream/mary-kay-extra-emollient-night-cream-100407/100407US10072682.html', note:'Apply after all other moisturizers.'});
+  if(hasStubborn)            base.push({name:'Mary Kay® Oil-Free Eye Makeup Remover', url:'https://www.marykay.com/sistahay/en/best-sellers/mary-kay-oil-free-eye-makeup-remover-990299632/990299632US10179024.html'});
+  if(hasExcessOil)           base.push({name:'Beauty Blotters® Oil-Absorbing Tissues', url:'https://www.marykay.com/sistahay/en/skincare/concern/blemishes-acne/beauty-blotters-oilabsorbing-tissues-180204/180204US10041758.html'});
+
+  var gettingBeyond   = base.some(function(p){ return p.name && p.name.indexOf('Beyond Ultimate') !== -1; });
+  var gettingUltimate = base.some(function(p){ return p.name && p.name.indexOf('Ultimate TimeWise') !== -1; });
+  var gettingSet      = gettingBeyond || gettingUltimate;
+
+  if(hasLargePores && !gettingBeyond && !isTeen)
+    base.push({name:'TimeWise® Microdermabrasion Plus Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-microdermabrasion-plus-set-10198866/990308715US10198866.html'});
+
+  // ══════════════════════════════════════════════════════════════
+  // FUTURE / SPECIFIC NEEDS (income-gated)
+  // ══════════════════════════════════════════════════════════════
+  if(!isTeen && incomeNamed){
+    // Skin Tone Variations
+    if(hasSkinTone) future.push({name:'Mary Kay Clinical Solutions® Ferulic + Niacinamide Brightener', url:'https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ferulic-niacinamide-brightener-990284880/990284880US10177902.html'});
+    // Redness / Fragile
+    if(hasRedness || hasFragile) future.push({name:'Mary Kay Clinical Solutions® Barrier Restore 1:1:3', url:'https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/clinical-solutions-barrier-restore-113-10234061/990327732US10234061.html'});
+    // Wrinkles → Clinical Solutions (age-gated)
+    if(hasWrinkles){
+      if(is20s30 || is40s50 || is60s70)
+        future.push({name:'Mary Kay Clinical Solutions® Dynamic Wrinkle Limiter™', url:'https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-dynamic-wrinkle-limiter-10227734/990320771US10227734.html'});
+      if(is80p)
+        future.push({name:'Mary Kay Clinical Solutions® Retinol 0.3', url:'https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-retinol-03-10238881/990327276US10238881.html'});
+      future.push({name:'Mary Kay Clinical Solutions® C + Resveratrol Line-Reducer', url:'https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-c-resveratrol-line-reducer-990284878/990284878US10177899.html'});
+      if(hasExDry) future.push({name:'Mary Kay Clinical Solutions® HA + Ceramide Hydrator', url:'https://www.marykay.com/sistahay/en/skincare/collection/clinical-solutions/mary-kay-clinical-solutions-ha-ceramide-hydrator-990284879/990284879US10177906.html'});
+    }
+    // Excess Oil add-on
+    if(hasExcessOil && isTier2or3) future.push({name:'Mary Kay® Translucent Loose Powder', url:'https://www.marykay.com/sistahay/en/makeup/face/loose-powder/mary-kay-translucent-loose-powder-111250/111250US10060182.html'});
+    // Extremely Dry hydrator
+    if(hasExDry && isTier2or3){
+      if(hasOily) future.push({name:'Mary Kay® Oil-Free Hydrating Gel', url:'https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-oilfree-hydrating-gel-990303404/990303404US10197545.html'});
+      else         future.push({name:'Mary Kay® Intense Moisturizing Cream', url:'https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-moisturizing/mary-kay-intense-moisturizing-cream-180202/180202US10031541.html'});
+    }
+    // Dark circles
+    if(hasDarkCirc) future.push({name:'TimeWise® Firming Eye Cream', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-firming-eye-cream-10225538/990322933US10225538.html'});
+    // Nourishing Oil — both dry + oily selected
+    var hasBoth = (hasQ('Normal/Dry') || hasQ('Dry') || hasQ('Extremely Dry')) && (hasQ('Combination/Oily') || hasQ('Oily') || hasQ('Excess Oil'));
+    if(hasBoth) future.push({name:'Mary Kay® Nourishing Oil', url:'https://www.marykay.com/sistahay/en/skincare/product/serum-and-oil/mary-kay-nourishing-oil-10235072/990321697US10235072.html'});
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // BODY (always last)
+  // ══════════════════════════════════════════════════════════════
+  if(state.q3==='Yes'){
+    var b = state.q3b || [];
+    if(b.includes('Sunburn Prone')){
+      bodyProds.push({name:'Broad Spectrum Body Sun Protection SPF 50', url:'https://www.marykay.com/sistahay/en/body-sun/body-sun-concern/sun/mary-kay-sunscreen-spf-50-10237287/990327133US10237287.html'});
+      bodyProds.push({name:'Special-Edition† Mary Kay® After-Sun Replenishing Gel', url:'https://www.marykay.com/sistahay/en/skincare/concern/skin-care-concern-sun-care/special-edition-mary-kay-after-sun-replenishing-gel-10229067/990326241US10229067.html'});
+    }
+    var hasDryFeet = b.includes('Dry Feet'), hasDryHands = b.includes('Dry Hands');
+    if(hasDryFeet || hasDryHands){
+      var sNote = hasDryFeet && hasDryHands ? 'Use on your hands and feet before bed with cozy socks on.' : hasDryFeet ? 'Use on your feet before bed with cozy socks on.' : '';
+      bodyProds.push({name:'Fragrance-Free Satin Hands® Pampering Set', url:'https://www.marykay.com/sistahay/en/skincare/collection/satin-collection/fragrancefree-satin-hands-pampering-set-990331028/990331028US10238148.html', note:sNote});
+    }
+    if(b.includes('Dry Skin') && !hasDryFeet) bodyProds.push({name:'Mary Kay® Hydrating Lotion', url:'https://www.marykay.com/sistahay/en/gifts/gifts-for/gifts-her/hello-clean-10080376/10080376US10080376.html'});
+    if(b.includes('Cellulite')) bodyProds.push({name:'TimeWise® Targeted-Action® Toning Lotion', url:'https://www.marykay.com/sistahay/en/skincare/collection/timewise/timewise-targeted-action-toning-lotion-98000782/98000782US10219506.html', note:'To target your cellulite, this will take care of you.'});
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  // DEDUP + SAVE STATE
+  // ══════════════════════════════════════════════════════════════
+  var seen = {};
+  function dedup(arr){ return arr.filter(function(p){ if(seen[p.name]) return false; seen[p.name]=true; return true; }); }
+  base      = dedup(base);
+  future    = dedup(future);
+  bodyProds = dedup(bodyProds);
+
+  // Eye cream hierarchy: if a more advanced eye cream is present, remove the basic one
+  var allProds = base.concat(future);
+  var hasAdvancedEye = allProds.some(function(p){
+    return p.name && (
+      p.name.indexOf('Firming Eye Cream') !== -1 ||
+      p.name.indexOf('Eye Renewal Cream') !== -1 ||
+      p.name.indexOf('Ultimate TimeWise') !== -1 ||
+      p.name.indexOf('Beyond Ultimate') !== -1 ||
+      p.name.indexOf('Ultimate Volu-Firm') !== -1
+    );
+  });
+  if(hasAdvancedEye){
+    base   = base.filter(function(p){ return !p.name || p.name.indexOf('TimeWise® Eye Cream') === -1; });
+    future = future.filter(function(p){ return !p.name || p.name.indexOf('TimeWise® Eye Cream') === -1; });
+  }
+
+  state.products = base.concat(
+    future.map(function(p){ return Object.assign({},p,{isFuture:true}); }),
+    bodyProds.map(function(p){ return Object.assign({},p,{isBody:true}); })
+  );
+
+  // ══════════════════════════════════════════════════════════════
+  // RENDER
+  // ══════════════════════════════════════════════════════════════
+  var list      = document.getElementById('results-list');
+  var noRes     = document.getElementById('no-results-section');
+  var actionSec = document.getElementById('results-action-section');
+  list.innerHTML = '';
+
+  if(!base.length && !future.length && !bodyProds.length){
+    noRes.style.display = 'block'; actionSec.style.display = 'none';
+  } else {
+    noRes.style.display = 'none'; actionSec.style.display = 'block';
+
+    function makeItem(p){
+      var li = document.createElement('li');
+      li.innerHTML = '<a href="'+p.url+'" target="_blank">❖ '+p.name+'</a>'
+        +(p.note?'<br><span style="font-size:12px;color:var(--gray);font-style:italic;">'+p.note+'</span>':'');
+      return li;
+    }
+    function makeHeader(text, mt){
+      var li = document.createElement('li');
+      li.style.cssText = 'font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;padding:'+(mt||'8px')+' 0 4px;font-weight:600;list-style:none;';
+      li.textContent = text;
+      return li;
+    }
+    function makeOverwhelm(){
+      var li = document.createElement('li');
+      li.style.listStyle = 'none';
+      li.innerHTML = '<span style="font-size:12px;color:var(--gray);font-style:italic;line-height:1.7;">This list may be overwhelming when starting out with new products. You can retake the assessment and narrow down your concerns to the ones that are most pressing at the moment. Return to this assessment anytime in the future after you get comfortable using your current products.</span>';
+      return li;
+    }
+
+    if(base.length){
+      list.appendChild(makeHeader('Start with:'));
+      if(base.length > 4) list.appendChild(makeOverwhelm());
+      base.forEach(function(p){ list.appendChild(makeItem(p)); });
+    }
+    if(future.length && isTier2or3){
+      list.appendChild(makeHeader('Think about these in the near future:', '16px'));
+      if(future.length > 3) list.appendChild(makeOverwhelm());
+      future.forEach(function(p){ list.appendChild(makeItem(p)); });
+    }
+    if(bodyProds.length){
+      list.appendChild(makeHeader('Body Skincare:', '16px'));
+      bodyProds.forEach(function(p){ list.appendChild(makeItem(p)); });
     }
   }
 
@@ -1438,7 +1549,7 @@ function onCityChange(){
   const zipInput = document.getElementById('prof-zip');
   const addrSec  = document.getElementById('addr-section');
   zipInput.value = city ? (cityZipMap[city]||'') : '';
-  addrSec.style.display = city ? 'block' : 'none';
+  addrSec.style.display='block';
 }
 
 
@@ -1499,6 +1610,9 @@ function submitProfile(){
 }
 
 async function doProfileSubmit(fields, _unused){
+  const btn = document.getElementById('profile-submit-btn');
+  if(btn){ btn.textContent = 'Submitting…'; btn.disabled = true; }
+
   // Rebuild all prof fields from DOM (called after validation + optional sig skip)
   const firstName = fields.firstName, lastName = fields.lastName;
   const email = fields.email, addr = fields.addr, addr2 = fields.addr2;
@@ -1683,7 +1797,7 @@ async function doProfileSubmit(fields, _unused){
     ['Age Range', state.q6],
     ['Income Bracket', incomeDisplay],
     ['Priority Concerns', state.q8.join(', ')],
-    ['Body Skincare Selected', state.q9b.length ? state.q9b.join(', ') : 'None'],
+    ['Body Skincare Selected', state.q3b.length ? state.q3b.join(', ') : 'None'],
   ];
 
   y = sectionHead('ASSESSMENT ANSWERS', y); y += 10;
@@ -1787,8 +1901,8 @@ async function doProfileSubmit(fields, _unused){
       <div class="irow"><span class="ilabel">Spending Profile:</span> Advanced anti-aging and at-home spa treatments. Often upgrades to TimeWise Repair Volu-Firm line. Purchases specialized tools like the Skinvigorate Sonic brush and utilizes the Clinical Solutions line (Retinol 0.3).</div>
     </div>` : `<div class="irow" style="color:#b09090;font-style:italic;">Income bracket not specified.</div>`;
 
-  const _income_tier = state.q7;
-  const _shown = (p) => !p.future || _income_tier==='tier2' || _income_tier==='tier3';
+  const _income_tier = null; // tier system removed
+  const _shown = (p) => p.tier1 && !p.future; // only tier1 shown to customer
   const _cBase = state.products.filter(p=>!p.future);
   const _cFut  = state.products.filter(p=>p.future);
   let prodHtmlMain = '';
@@ -1875,7 +1989,7 @@ async function doProfileSubmit(fields, _unused){
     ${frow('Priority Concerns',state.q8.join(', '))}
     ${frow2('Product Preference',state.q4,'Age Range',state.q6)}
     ${frow2('Pollutant Method',state.q5+(state.q5other?' ('+state.q5other+')':''),'Foundation Satisfied',state.q5b||'N/A')}
-    ${frow('Body Assessment',(state.q9b||[]).join(', ')||'None')}
+    ${frow('Body Assessment',(state.q3b||[]).join(', ')||'None')}
   </div>
 
   <div class="section">
@@ -1891,20 +2005,15 @@ async function doProfileSubmit(fields, _unused){
   <p style="font-size:11px;color:#b09090;margin-top:20px;">Submitted: ${new Date().toLocaleString()}</p>
 </div>`);
 
-  sendViaFormspree(`New Lead from Product Match (via Continue) - ${prof.name}`, message, email);
-  sendContinueCustomerEmail(prof);
-  goTo('screen-thankyou');
-}
+  // ── Send consultant email (existing) ──
+  sendViaFormspree(`NEW LEAD / SAMPLES REQUESTED — ${prof.name}`, message, email);
 
-async function sendContinueCustomerEmail(prof){
-  const firstName=prof.name.split(' ')[0];
-  const _q1=state.q1||[],_q8=state.q8||[];
-  const _dry=_q1.includes('Normal/Dry')||_q1.includes('Dry')||_q1.includes('Extremely Dry')||_q8.includes('Dry');
-  const _oily=_q1.includes('Combination/Oily')||_q1.includes('Oily')||_q1.includes('Excess Oil')||_q8.includes('Oily');
-  const cFoundRec=state.q3==='Light'?'Mary Kay CC Cream Sunscreen Broad Spectrum SPF 15':state.q3==='Medium'?'Endless Performance™ Crème-to-Powder Foundation':state.q3==='Full'&&_dry?'TimeWise® Luminous 3D Foundation':state.q3==='Full'&&_oily?'TimeWise® Matte-Wear Liquid Foundation':state.q3==='Full'?'TimeWise® Luminous 3D Foundation':null;
-  const foundationSection=cFoundRec?`<div class="section"><div class="sec-title">✦ Your Foundation Match</div><div class="product-item"><a href="https://www.marykay.com/sistahay/en/foundation-finder.html" target="_blank">Find Your Match → ${cFoundRec}</a></div></div>`:'';
-  const customerHtml=emailWrap(`<div class="hdr"><h1>Mary Kay</h1><p>Your Skincare Qualification Results</p></div><div class="body"><p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;color:#2a1a20;font-weight:300;margin:0 0 6px;">Dear ${firstName},</p><div style="width:40px;height:1px;background:linear-gradient(90deg,#e8507a,#c9a96e);margin:0 0 22px;"></div><p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">I am so excited for you! You have just begun the first step to your new self. Initial appearances are marked by our faces and when we are confident behind them, it can really boost our vitality.</p><p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">Your saved progress email contains your personalized assessment results compiled into product links to begin your skincare journey with Mary Kay. The best part about these selections are that they evolve as your skin does&#8202;&#8212;&#8202;with my help!</p><p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 28px;">You now have evolving product choices with your personal Mary Kay Beauty Consultant! <strong>Congratulations</strong>&#8202;&#8212;&#8202;I look forward to working with you!</p>${foundationSection}<div style="border-top:1px solid #f0e8eb;margin-top:32px;padding-top:24px;"><p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:20px;color:#6b3fa0;font-weight:400;margin:0 0 2px;font-style:italic;">Skin-cerely yours,</p><p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;color:#2a1a20;margin:0 0 10px;">Hali Sarah Parsons</p><p style="font-size:11px;color:#b09090;margin:0 0 2px;letter-spacing:1px;text-transform:uppercase;">Mary Kay Independent Beauty Consultant</p><p style="font-size:11px;color:#b09090;margin:0 0 2px;"><a href="mailto:sistahaymarykay@gmail.com" style="color:#e8507a;text-decoration:none;font-weight:500;">sistahaymarykay@gmail.com</a></p><p style="font-size:11px;color:#b09090;margin:0 0 20px;"><a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;" >marykay.com/sistahay</a></p></div><div style="text-align:center;margin-top:4px;"><a href="${ASSESS_URL}" style="background:none;border:1px solid #d0b0b8;color:#b09090;border-radius:50px;padding:9px 24px;font-size:11px;font-family:'Jost',Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;text-decoration:none;display:inline-block;">Retake the Assessment</a></div></div>`);
-  try{if(window.emailjs)await emailjs.send(EJS_SERVICE_ID,EJS_TEMPLATE_ID,{to_email:prof.email,subject:'Welcome to Your Mary Kay Journey!',message:customerHtml,reply_to:CONSULTANT_EMAIL,name:'Hali Sarah Parsons'});}catch(e){console.warn('email:',e);}
+  // ── Send personal qualification results email to CUSTOMER ──
+  sendCustomerCompletionEmail(prof);
+
+  // ── Navigate to thank-you screen (final step) ──
+  if(btn){ btn.textContent = 'Submit'; btn.disabled = false; }
+  goTo('screen-thankyou');
 }
 
 // ═══════════════════════════════════════════════════
@@ -1913,22 +2022,42 @@ async function sendContinueCustomerEmail(prof){
 //  Uses a separate EmailJS template so it routes TO the customer's address
 // ═══════════════════════════════════════════════════
 // ═══ BUILD SPLIT PRODUCT HTML FOR CUSTOMER EMAILS ═══
-function buildCustomerProductHtml(products, income){
+function buildCustomerProductHtml(products){
+  // Customer completion email shows Start with only
+  // Future/tier2 products go in save progress email with dropdown
   if(!products||!products.length)
     return '<p style="color:#b09090;font-style:italic;">Your consultant will follow up with personalized recommendations.</p>';
-  const isTier2or3 = income==='tier2'||income==='tier3';
-  const base   = products.filter(p=>!p.future);
+  const base = products.filter(p=>!p.future&&p.tier1);
+  if(!base.length)
+    return '<p style="color:#b09090;font-style:italic;">Your consultant will follow up with personalized recommendations.</p>';
+  let html = '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:8px 0 6px;font-weight:600;">Start with:</div>';
+  html += base.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;">✦ ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}</div>`).join('');
+  html += `<div style="margin-top:24px;padding:14px 18px;background:#fff8f0;border-left:3px solid #c9a96e;border-radius:8px;font-size:12px;color:#3d2530;line-height:1.8;">
+    <em>Note: It is best to start with a basic routine and reassess your results with me to best serve you.</em>
+  </div>`;
+  return html;
+}
+
+function buildFutureProductHtml(products){
+  // Collapsible "Want More?" dropdown for save progress customer email
   const future = products.filter(p=>p.future);
-  let html = '';
-  if(base.length){
-    html += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:8px 0 6px;font-weight:600;">Start with:</div>';
-    html += base.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}</div>`).join('');
-  }
-  if(future.length&&isTier2or3){
-    html += '<div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:16px 0 6px;font-weight:600;border-top:1px solid #f0e8eb;margin-top:8px;">Think about these in the near future:</div>';
-    html += future.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank">✦ ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}</div>`).join('');
-  }
-  return html||'<p style="color:#b09090;font-style:italic;">Your consultant will follow up with personalized recommendations.</p>';
+  if(!future.length) return '';
+  const items = future.map(p=>`<div class="product-item"><a href="${p.url}" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;">✦ ${p.name}</a>${p.note?`<br><span style="font-size:11px;color:#b09090;font-style:italic;">${p.note}</span>`:''}</div>`).join('');
+  return `
+  <div style="margin-top:24px;">
+    <details style="border:1px solid #f0dde5;border-radius:10px;overflow:hidden;">
+      <summary style="padding:14px 18px;background:linear-gradient(135deg,#fff5f8,#fef9f0);cursor:pointer;font-family:'Cormorant Garamond',Georgia,serif;font-size:16px;color:#2a1a20;font-weight:400;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+        Want More? <span style="font-size:12px;color:#c9a96e;letter-spacing:1px;font-family:'Jost',Arial,sans-serif;">tap to expand ▾</span>
+      </summary>
+      <div style="padding:16px 18px;background:white;">
+        <div style="font-size:10px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;padding:0 0 10px;font-weight:600;">In the near future, you may consider:</div>
+        ${items}
+        <div style="margin-top:16px;padding:12px 16px;background:#fff8f0;border-left:3px solid #c9a96e;border-radius:8px;font-size:12px;color:#3d2530;line-height:1.8;">
+          <em>Note: It is best to start with a basic routine and reassess your results with me to best serve you.</em>
+        </div>
+      </div>
+    </details>
+  </div>`;
 }
 
 
@@ -2003,14 +2132,10 @@ async function sendCustomerCompletionEmail(prof){
   const _q1 = state.q1||[], _q8 = state.q8||[];
   const _dry  = _q1.includes('Normal/Dry')||_q1.includes('Dry')||_q1.includes('Extremely Dry')||_q8.includes('Dry');
   const _oily = _q1.includes('Combination/Oily')||_q1.includes('Oily')||_q1.includes('Excess Oil')||_q8.includes('Oily');
-  const cFoundRec = state.q3==='Light'  ? 'Mary Kay CC Cream Sunscreen Broad Spectrum SPF 15'
-    : state.q3==='Medium'               ? 'Endless Performance™ Crème-to-Powder Foundation'
-    : state.q3==='Full' && _dry         ? 'TimeWise® Luminous 3D Foundation'
-    : state.q3==='Full' && _oily        ? 'TimeWise® Matte-Wear Liquid Foundation'
-    : state.q3==='Full'                 ? 'TimeWise® Luminous 3D Foundation'
-    : null;
+  const cFoundRec = state.q2==='Yes' ? 'Foundation Finder' : null;
 
-  const productItemsHtml = buildCustomerProductHtml(state.products, state.q7);
+  const productItemsHtml = buildCustomerProductHtml(state.products);
+  // No future dropdown in completion email — only in save progress
 
   // Opportunity section — only if "Earning extra money" was checked
   const _wantsOpp = document.getElementById('int-money') && document.getElementById('int-money').checked;
@@ -2047,15 +2172,16 @@ async function sendCustomerCompletionEmail(prof){
   <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;color:#2a1a20;font-weight:300;margin:0 0 6px;">Dear ${firstName},</p>
   <div style="width:40px;height:1px;background:linear-gradient(90deg,#e8507a,#c9a96e);margin:0 0 22px;"></div>
 
-  <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">I am so excited for you! You have just begun the first step to your new self. Initial appearances are marked by our faces and when we are confident behind them, it can really boost our vitality.</p>
+  <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">I am so excited for you! You have just begun the first step to your new self. Initial appearances are marked by our faces and when we are confident behind them, it can really boost our vitality. I will be packaging up the free samples you have requested within the next few days.</p>
 
-  <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">Below contains your personalized assessment results compiled into product links to begin your skincare journey with Mary Kay. The best part about these selections are that they evolve as your skin does&#8202;&#8212;&#8202;with my help! Every step of the way, I can be as involved as you are comfortable with.</p>
+  <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 16px;">In the meantime, I have included your personalized assessment results compiled into product links for your records. The best part about these selections are that they evolve as your skin does&#8202;&#8212;&#8202;with my help! Every step of the way, I can be as involved as you are comfortable with.</p>
 
   <p style="font-size:14px;color:#3d2530;line-height:1.9;margin:0 0 28px;">You now have evolving product choices with your personal Mary Kay Beauty Consultant! <strong>Congratulations</strong>&#8202;&#8212;&#8202;I look forward to working with you to get your skin glowing and radiant!</p>
 
   <div class="section">
     <div class="sec-title">✦ Your Qualification Results</div>
     ${productItemsHtml}
+  ${futureDropdownHtml}
   </div>
 
   ${foundationSection}
@@ -2163,7 +2289,7 @@ async function sendModalEmail(){
     const _sq1=state.q1||[],_sq8=state.q8||[];
     const _sDry=_sq1.includes('Normal/Dry')||_sq1.includes('Dry')||_sq1.includes('Extremely Dry')||_sq8.includes('Dry');
     const _sOily=_sq1.includes('Combination/Oily')||_sq1.includes('Oily')||_sq1.includes('Excess Oil')||_sq8.includes('Oily');
-    const _sFoundRec=state.q3==='Light'?'Mary Kay CC Cream Sunscreen Broad Spectrum SPF 15':state.q3==='Medium'?'Endless Performance™ Crème-to-Powder Foundation':state.q3==='Full'&&_sDry?'TimeWise® Luminous 3D Foundation':state.q3==='Full'&&_sOily?'TimeWise® Matte-Wear Liquid Foundation':state.q3==='Full'?'TimeWise® Luminous 3D Foundation':'Not selected';
+    const _sFoundRec = state.q2==='Yes' ? 'Yes — uses/wants foundation' : 'No — does not use foundation';
     const _sfr=(l,v)=>`<div class="row"><div class="field"><div class="field-lbl">${l}</div><div class="field-val">${v||'—'}</div></div></div>`;
     const _sfr2=(l1,v1,l2,v2)=>`<div class="row"><div class="field"><div class="field-lbl">${l1}</div><div class="field-val">${v1||'—'}</div></div><div class="field"><div class="field-lbl">${l2}</div><div class="field-val">${v2||'—'}</div></div></div>`;
 
@@ -2179,10 +2305,10 @@ async function sendModalEmail(){
     ${_sfr('Skin Definition',(state.q1||[]).join(', '))}
     ${_sfr('Skin Goals',[...(state.q2||[]),state.q2other].filter(Boolean).join(', '))}
     ${_sfr('Priority Concerns',(state.q8||[]).join(', '))}
-    ${_sfr2('Age Range',state.q6,'Income Bracket',_sIncome)}
-    ${_sfr2('Foundation Preference',state.q3,'Foundation Recommendation',_sFoundRec)}
-    ${_sfr2('Product Preference',state.q4,'Pollutant Method',(state.q5||'')+(state.q5other?' ('+state.q5other+')':''))}
-    ${_sfr2('Foundation Satisfied',state.q5b||'N/A','Body Assessment',(state.q9b||[]).join(', ')||'None')}
+    
+    ${_sfr('Foundation','state.q2==="Yes"?"Uses/wants foundation":"Does not use foundation"')}
+    
+    ${_sfr('Body Assessment',(state.q3b||[]).join(', ')||'None selected')}
   </div>
   <div class="section">
     <div class="sec-title">Recommended Products (So Far)</div>
@@ -2192,7 +2318,8 @@ async function sendModalEmail(){
 </div>`);
 
     // ── Email 2: to CUSTOMER — styled HTML matching quiz ──
-    const productItemsHtml = buildCustomerProductHtml(state.products, state.q7);
+    const productItemsHtml = buildCustomerProductHtml(state.products);
+    const futureDropdownHtml = buildFutureProductHtml(state.products);
 
   // Opportunity section — only if "Earning extra money" was checked
   const _wantsOpp = document.getElementById('int-money') && document.getElementById('int-money').checked;
@@ -2274,7 +2401,7 @@ async function sendModalEmail(){
 </div>`);
 
     let sent1=false,sent2=false;
-    try{sent1=await sendViaFormspree('Saved Progress from Product Match - '+name,consultantHtml,email);}catch(e){console.warn('Consultant email:',e);}
+    try{sent1=await sendViaFormspree('Saved Results from Product Match - '+name,consultantHtml,email);}catch(e){console.warn('Consultant email:',e);}
     try{sent2=await sendViaFormspree('My Saved Progress from Qualification Assessment',customerHtml,CONSULTANT_EMAIL,email);}catch(e){console.warn('Customer email:',e);}
 
     btn.textContent='Send'; btn.disabled=false;
@@ -2311,7 +2438,7 @@ FOUNDATION SAT:    ${state.q5b||'N/A'}
 AGE RANGE:         ${state.q6||''}
 INCOME:            ${state.q7==='tier1'?'$35K–$55K':state.q7==='tier2'?'$60K–$95K':state.q7==='tier3'?'$100K+':state.q7other||state.q7||''}
 PRIORITY CONCERNS: ${(state.q8||[]).join(', ')}
-BODY:              ${state.q9||''} ${(state.q9b||[]).join(', ')}
+BODY:              ${state.q3||''} ${(state.q3b||[]).join(', ')}
 
 RECOMMENDED PRODUCTS:
 ${productLines}
@@ -2429,45 +2556,186 @@ function initTySparkles(){
   }
 }
 
-
+// Home screen particles
+(function(){
+  var c = document.getElementById('home-particles');
+  if(!c) return;
+  for(var i=0; i<60; i++){
+    var p = document.createElement('div');
+    p.className = 'hp';
+    p.style.position = 'absolute';
+    p.style.left = (Math.random()*100)+'%';
+    p.style.top = '110%';
+    var size = (Math.random()*1.5+1)+'px';
+    p.style.width = size;
+    p.style.height = size;
+    p.style.borderRadius = '50%';
+    p.style.animationDuration = (Math.random()*10+8)+'s';
+    p.style.animationDelay = (Math.random()*8)+'s';
+    var isGold = i%3!==0;
+    var col = isGold ? '#c9a96e' : '#e8507a';
+    p.style.background = col;
+    p.style.boxShadow = '0 0 6px '+col+', 0 0 12px '+col;
+    p.style.opacity = '0';
+    c.appendChild(p);
+  }
+})();
 
 // Skip home screen — go straight to Q1 on load
-// "Retake the Assessment" buttons still call window.location.href='https://halisarah.github.io/SkinCare/Assess.html' which works normally
+// "Retake the Assessment" buttons still call window.location.href='https://halisarah.github.io/SkinCare/BracketAssess.html' which works normally
 window.scrollTo(0, 0);
 
 // ═══ RESUME: restore saved progress if ?sid= in URL ═══
-(function tryResume(){ return; })();
+(function tryResume(){
+  var saved = loadProgress();
+  if(!saved || !saved._screen) return;
+  if(window.state){
+    Object.keys(saved).forEach(function(k){
+      if(k !== '_screen' && k !== '_ts') window.state[k] = saved[k];
+    });
+  }
+  var target = saved._screen;
+  setTimeout(function(){
+    if(target === 'screen-q8') populateQ8 && populateQ8();
+    if(target === 'screen-results'){ buildResults && buildResults(); return; }
+    goTo(target);
+  }, 150);
+})();
 
+
+// ── SAMPLE DROPDOWN ──
+function toggleSampleDropdown(){
+  var body=document.getElementById('sample-dropdown-body');
+  var arrow=document.getElementById('sample-arrow');
+  if(!body||!arrow)return;
+  var open=body.style.display!=='none';
+  body.style.display=open?'none':'block';
+  arrow.style.transform=open?'':'rotate(90deg)';
+  if(!open)buildSampleProductList();
+}
+function buildSampleProductList(){
+  var container=document.getElementById('sample-product-list');
+  if(!container)return;
+  container.innerHTML='';
+  var prods=(typeof state!=='undefined'&&state.products)?state.products:[];
+  if(!prods.length){container.innerHTML='<p style="font-size:13px;color:var(--gray);font-style:italic;">Complete your assessment first to see your products here.</p>';return;}
+  prods.forEach(function(p,idx){
+    var chip=document.createElement('div');
+    chip.style.cssText='display:flex;align-items:center;gap:10px;padding:10px 14px;border:1.5px solid #e8d5db;border-radius:10px;cursor:pointer;background:white;transition:all 0.2s;';
+    chip.innerHTML='<input type="checkbox" id="sample-chk-'+idx+'" data-name="'+p.name+'" data-url="'+p.url+'" style="accent-color:#e8507a;width:16px;height:16px;cursor:pointer;"><label for="sample-chk-'+idx+'" style="font-size:13px;color:#3d2530;cursor:pointer;line-height:1.4;">'+p.name+'</label>';
+    chip.querySelector('input').addEventListener('change',function(){
+      chip.style.background=this.checked?'#fce4ec':'white';
+      chip.style.borderColor=this.checked?'#e8507a':'#e8d5db';
+      updateSampleAddressFields();
+    });
+    container.appendChild(chip);
+  });
+}
+function updateSampleAddressFields(){
+  var addrContainer=document.getElementById('sample-address-fields');
+  if(!addrContainer)return;
+  var checked=document.querySelectorAll('#sample-product-list input[type=checkbox]:checked');
+  addrContainer.innerHTML='';
+  if(!checked.length)return;
+  var lbl=document.createElement('p');
+  lbl.style.cssText='font-size:11px;letter-spacing:2px;color:#c9a96e;text-transform:uppercase;margin-bottom:8px;font-weight:600;';
+  lbl.textContent='Sample Shipping Address';
+  addrContainer.appendChild(lbl);
+  var note=document.createElement('p');
+  note.style.cssText='font-size:12px;color:#8a7a80;margin-bottom:10px;font-style:italic;';
+  note.textContent='Please confirm where you\'d like your samples shipped:';
+  addrContainer.appendChild(note);
+  ['Street Address','City','State','ZIP'].forEach(function(f,i){
+    var ids=['sample-addr','sample-city','sample-state','sample-zip'];
+    var inp=document.createElement('input');
+    inp.type='text';inp.id=ids[i];inp.placeholder=f;inp.className='form-input';inp.style.marginBottom='8px';
+    var map={'sample-addr':'prof-addr','sample-city':'prof-city','sample-state':'prof-state','sample-zip':'prof-zip'};
+    var el=document.getElementById(map[ids[i]]);
+    if(el)inp.value=el.value||'';
+    addrContainer.appendChild(inp);
+  });
+}
+function getSampleSelections(){
+  var checked=document.querySelectorAll('#sample-product-list input[type=checkbox]:checked');
+  if(!checked.length)return null;
+  var items=[];
+  checked.forEach(function(ch){items.push({name:ch.dataset.name,url:ch.dataset.url});});
+  return{items:items,addr:(document.getElementById('sample-addr')||{value:''}).value.trim(),city:(document.getElementById('sample-city')||{value:''}).value.trim(),st:(document.getElementById('sample-state')||{value:''}).value.trim(),zip:(document.getElementById('sample-zip')||{value:''}).value.trim()};
+}
+
+
+function toggleAllConsent(master){
+  ['consent-contact','consent-data','consent-personalized','consent-profile'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){
+      el.checked = master.checked;
+      el.dispatchEvent(new Event('change'));
+    }
+  });
+}
 </script>
 
 <!-- ═══════ THANK YOU SCREEN — final step after profile submit ═══════ -->
+<div id="screen-thankyou" class="screen" style="background:radial-gradient(ellipse at 20% 50%,#3d0a1e 0%,#1a0d13 50%,#0d0608 100%);justify-content:center;position:relative;overflow:hidden;min-height:100vh;">
 
-<script>
-window.scrollTo(0,0);
-setTimeout(initCanvas,300);
-(function(){
-  var c=document.getElementById('home-particles');if(!c)return;
-  for(var i=0;i<60;i++){var p=document.createElement('div');p.className='hp';
-    p.style.left=(Math.random()*100)+'%';var sz=(Math.random()*1.5+1)+'px';
-    p.style.width=sz;p.style.height=sz;
-    p.style.animationDuration=(Math.random()*10+8)+'s';
-    p.style.animationDelay=(Math.random()*8)+'s';
-    var col=i%3!==0?'#c9a96e':'#e8507a';
-    p.style.background=col;p.style.boxShadow='0 0 6px '+col;
-    p.style.opacity='0';c.appendChild(p);}
-})();
-var _tyDone=false;
-function initTySparkles(){
-  if(_tyDone)return;_tyDone=true;
-  var el=document.getElementById('ty-sparkles');if(!el)return;
-  for(var i=0;i<60;i++){var s=document.createElement('div');s.className='hp';
-    s.style.left=(Math.random()*100)+'%';var sz=(Math.random()*3+2)+'px';
-    s.style.width=sz;s.style.height=sz;
-    var col=i%3===0?'#e8507a':i%3===1?'#c9a96e':'#fff';
-    s.style.color=col;s.style.background=col;s.style.boxShadow='0 0 6px '+col;
-    s.style.animationDuration=(Math.random()*10+6)+'s';
-    s.style.animationDelay=(Math.random()*4)+'s';el.appendChild(s);}
-}
-</script>
+  <!-- Sparkles fly up from bottom -->
+  <div id="ty-sparkles" style="position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;"></div>
+
+  <!-- Corner accents -->
+  <div class="hcorner htl"></div><div class="hcorner htr"></div>
+  <div class="hcorner hbl"></div><div class="hcorner hbr"></div>
+
+  <div class="question-card fade-in" style="max-width:580px;text-align:center;padding:clamp(36px,6vw,60px);background:rgba(255,255,255,0.04);border:1px solid rgba(201,169,110,0.2);border-radius:20px;box-shadow:0 4px 40px rgba(0,0,0,0.4);position:relative;z-index:2;margin:auto;">
+
+    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:28px;opacity:0.8;">Mary Kay &nbsp;·&nbsp; Skin Assessment</div>
+
+    <div style="font-size:52px;margin-bottom:16px;">✨</div>
+
+    <div style="font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,5vw,2.6rem);color:white;font-weight:300;line-height:1.2;margin-bottom:12px;">
+      You're All Set,<br><span style="font-style:italic;color:var(--gold);">Beautiful!</span>
+    </div>
+
+    <div style="width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:18px auto 24px;"></div>
+
+    <p style="font-size:14px;color:rgba(255,255,255,0.6);line-height:1.9;margin-bottom:20px;">
+      Your skin assessment is complete and your beauty profile has been submitted.
+      <em>Hali Sarah</em> will review your results and <em>may</em> reach out personally.
+    </p>
+
+    <div style="background:rgba(201,169,110,0.08);border-left:3px solid var(--gold);border-radius:10px;padding:18px 22px;margin:0 0 24px;text-align:left;">
+      <p style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.8;margin:0;">
+        <strong style="color:var(--gold);">What happens next?</strong><br>
+        Your personalized <strong>qualification results</strong> have been sent to your email.
+        Hali Sarah Parsons will follow up with you if no further action is taken on your behalf within 48 hours.
+        During this time, you may reach out to her to walk you through your qualified products and answer any questions.
+      </p>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <button onclick="openEmailInbox()" class="btn-primary" style="box-shadow:0 8px 24px rgba(232,80,122,0.4);border:none;cursor:pointer;">Check My Email 📬</button>
+    </div>
+
+    <p style="font-size:11px;color:rgba(255,255,255,0.35);line-height:1.8;margin-bottom:16px;">
+      If you have any questions, concerns or comments, please
+      <a href="https://www.marykay.com/sistahay/en/ibcprofile" target="_blank" style="color:#e8507a;text-decoration:none;font-weight:500;" >contact Hali Sarah</a> officially.
+    </p>
+
+    <div style="margin-top:8px;">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--gold);font-style:italic;margin:0;">Skin-cerely yours, Hali Sarah Parsons</p>
+      <p style="font-size:10px;letter-spacing:2px;color:rgba(255,255,255,0.3);margin:4px 0 16px;text-transform:uppercase;">Independent Beauty Consultant</p>
+    </div>
+
+    <p style="font-size:10px;color:rgba(255,255,255,0.15);line-height:1.8;margin-bottom:20px;">
+      This assessment was built by Hali Sarah Parsons, your new Mary Kay Independent Beauty Consultant!
+    </p>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid rgba(201,169,110,0.15);flex-wrap:wrap;gap:10px;">
+      <button onclick="goTo('screen-profile')" style="background:none;border:none;font-size:11px;color:rgba(255,255,255,0.3);cursor:pointer;padding:4px 8px;letter-spacing:1px;">← Back</button>
+      <a href="https://halisarah.github.io/SkinCare/Assess.html" style="font-size:11px;color:rgba(255,255,255,0.3);padding:4px 8px;letter-spacing:1px;text-decoration:none;">Retake the Assessment</a>
+    </div>
+
+  </div>
+</div>
+
 </body>
 </html>
