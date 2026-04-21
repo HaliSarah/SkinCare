@@ -855,6 +855,27 @@ function buildSimpleResults(){
       });
   }
   
+  // -- Ping: fires when someone reaches results --
+  (function(){
+    if(!window.emailjs) return;
+    var skinType = state.q1SkinType || '--';
+    var concern  = (state.q1 && state.q1[0]) ? state.q1[0] : '--';
+    var found    = state.q3Foundation || '--';
+    var body     = '<p style="font-family:Arial,sans-serif;font-size:14px;line-height:1.8;color:#2a1a20;">'
+      + '<strong>Someone reached the Results Screen on FBAssess.</strong><br><br>'
+      + 'Skin Type: ' + skinType + '<br>'
+      + 'Concern: ' + concern + '<br>'
+      + 'Foundation: ' + found + '<br>'
+      + 'Time: ' + new Date().toLocaleString()
+      + '</p>';
+    emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
+      to_email:  CONSULTANT_EMAIL,
+      subject:   'Results Screen Reached - FBAssess',
+      message:   body,
+      reply_to:  CONSULTANT_EMAIL,
+      name:      'FBAssess Tracker'
+    }).catch(function(e){ console.warn('Ping error:', e); });
+  })();
   goTo('screen-results'); // Reveal the results screen
 }
 
