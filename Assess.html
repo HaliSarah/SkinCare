@@ -1124,7 +1124,7 @@ async function doSubmitProfile(){
     }).then(function(){
       return emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
         to_email: email,
-        subject: 'Your Mary Kay Skincare Results ✨',
+        subject: 'Sample Request Sent ✈️',
         message: customerBody,
         reply_to: CONSULTANT_EMAIL,
         name: 'Hali Sarah Parsons'
@@ -1185,7 +1185,7 @@ async function sendProgressEmail(){
   if(window.emailjs){
     emailjs.send(EJS_SERVICE_ID, EJS_TEMPLATE_ID, {
       to_email: email,
-      subject: 'Your Mary Kay Beauty Profile Results ✨',
+      subject: 'Your Saved Results 🌺',
       message: html,
       reply_to: CONSULTANT_EMAIL,
       name: 'Hali Sarah Parsons'
